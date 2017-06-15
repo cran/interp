@@ -1,0 +1,209 @@
+commit cc970d97d907b8e417466be8f59fc7ec95313be4
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Thu Jun 15 17:07:52 2017 +0200
+
+    last help page fixes
+
+commit 98bf0a62b7c4bacdba4f366e0cf2c24ea9945ddc
+Merge: cd4be18 844a6f3
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Thu Jun 15 15:07:02 2017 +0200
+
+    Merge branch 'master' into 'master'
+    
+    minor edits in help files
+    
+    See merge request !3
+
+commit 844a6f37805e7587bc54b6f98da63c90961e973f
+Author: Roger Bivand <Roger.Bivand@nhh.no>
+Date:   Thu Jun 15 14:39:31 2017 +0200
+
+    minor edits in help files
+
+commit cd4be18c876f73a31b56db8c3c1e95b0703c9bee
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Thu Jun 15 12:36:43 2017 +0200
+
+    some simplifications
+
+commit c980d5d29d891948a093cb4912554b4eeaea06e4
+Author: Albrecht Gebhardt <alge@macbook13.algepop.net>
+Date:   Mon Jun 12 14:15:35 2017 +0200
+
+    last? fixes for tri->triSht renaming
+
+commit 02086a6f3cc1d194aebedb4a6073d6263343999e
+Author: Albrecht Gebhardt <alge@macbook13.algepop.net>
+Date:   Mon Jun 12 13:50:27 2017 +0200
+
+    fix return object type
+
+commit 18b561bc205fe475691181106427dc6578459bbe
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Mon Jun 12 11:28:32 2017 +0200
+
+    split Changelog file
+
+commit 0692a43913b394712691453e627bc22d953941e8
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Mon Jun 12 11:06:17 2017 +0200
+
+    rename "tri" objects to "triSht"
+
+commit 18c3ed6cb82fdc0c6b11468ac65c148e8bfa47b6
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Sun Jun 11 21:47:36 2017 +0200
+
+    fill help pages a little bit more.
+
+commit db5ba44bb95fcff8c1dc3fd135d0841982658bea
+Merge: 5919aa2 919fe42
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Sat Jun 10 15:15:52 2017 +0200
+
+    merge fixes
+    
+    Merge branch 'master' of gitlab.aau.at:agebhard/interp
+    
+    Conflicts:
+    	DESCRIPTION
+    	man/interp.Rd
+
+commit 5919aa297c52b2fff2a983ab14ba9c2f1c52208f
+Author: Albrecht Gebhardt <ALGEPOP\alge@algepop.net>
+Date:   Sat Jun 10 15:04:40 2017 +0200
+
+    several small fixes
+
+commit 919fe42da4a1a37d91aea8eee3b95e16ec8b3721
+Merge: c2a1954 5549987
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Sat Jun 10 13:51:57 2017 +0200
+
+    Merge branch 'master' into 'master'
+    
+    Master
+    
+    See merge request !2
+
+commit 55499878c77f29f1526ff3da73786b3a6e46b01a
+Author: Roger Bivand <Roger.Bivand@R-Project.org>
+Date:   Mon Jun 5 22:57:36 2017 +0200
+
+    tidy
+
+commit b0cb35099ea5921fa7b276087260ed48087ac9af
+Author: Roger Bivand <Roger.Bivand@R-Project.org>
+Date:   Mon Jun 5 14:59:03 2017 +0200
+
+    tidy
+
+commit af1e425f715574432587286fbce3fc24ef13ab12
+Author: Roger Bivand <Roger.Bivand@R-Project.org>
+Date:   Mon Jun 5 08:16:32 2017 +0200
+
+    register routines
+
+commit c2a19542e6d24a32ea4989b875a0d157431f82a6
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 29 17:03:43 2017 +0200
+
+    Delete .Rhistory
+
+commit 1b5bd75d2b28516255bec574ef6244bff72896a9
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Mon May 29 17:01:32 2017 +0200
+
+    add/extend notes
+
+commit b58b79537f782509db59b9ab9dd6d9985493deac
+Merge: 3c9c5c1 e728813
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 29 14:09:41 2017 +0200
+
+    Merge branch 'master' into 'master'
+    
+    change UTF-8 to ASCII and remove CVS folders
+    
+    See merge request !1
+
+commit e728813b55f128a214cddb8a82ecf2645b2b18c2
+Merge: ffa5535 3c9c5c1
+Author: Roger Bivand <Roger.Bivand@R-Project.org>
+Date:   Wed May 24 11:24:43 2017 +0200
+
+    Merge remote-tracking branch 'upstream/master'
+
+commit 3c9c5c123f818fde02ee175586bce7ecd1bd51a8
+Merge: 326ae33 036d935
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Mon May 22 09:45:24 2017 +0200
+
+    Merge branch 'master' of gitlab.aau.at:agebhard/interp
+
+commit 326ae3371018999026c8f446d15975e4c6ed0ae3
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Mon May 22 09:43:41 2017 +0200
+
+    added
+
+commit ffa5535187c8e6e29dbe4786b15b321ac78c1f9c
+Author: Roger Bivand <Roger.Bivand@nhh.no>
+Date:   Fri May 19 12:47:07 2017 +0200
+
+    tidy
+
+commit 2744175274ed55ad1c7890b7a4785a7a5d941e4b
+Author: Roger Bivand <Roger.Bivand@R-Project.org>
+Date:   Thu May 18 19:02:53 2017 +0200
+
+    change UTF-8 to ASCII and remove CVS folders
+
+commit 036d935da35830d91bd634b32dbcb570620c7325
+Author: Albrecht Gebhardt <ALGEPOP\alge@algepop.net>
+Date:   Thu May 18 18:00:53 2017 +0200
+
+    added
+
+commit cad84cdcc1e77225d2baf1118674061ecf0346e2
+Author: Albrecht Gebhardt <agebhard@mac02-stat.math.aau.at>
+Date:   Tue May 16 10:13:03 2017 +0200
+
+    more things for gitignore
+
+commit a5405d32a5728fc6295907c55a41d476d19b3b94
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 15 22:54:52 2017 +0200
+
+    more \eqn stuff
+
+commit 2d80551af5a212c69478a0b59d19d4898fe273a9
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 15 22:48:04 2017 +0200
+
+    fix
+
+commit dfc70b0917439718bdf8462cac9def88fdeb8216
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 15 22:40:06 2017 +0200
+
+    added
+
+commit bfd43f6902c3cee146b199b68fe46318f7f56ed3
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 15 22:35:45 2017 +0200
+
+    more changes from seafile
+
+commit b1e990a04ad0af586b6a0963517a9b755b270124
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 15 22:31:28 2017 +0200
+
+    cleanup
+
+commit 76d8ec527e372a15c11031261395fd350318adae
+Author: Gebhardt, Albrecht <albrecht.gebhardt@aau.at>
+Date:   Mon May 15 22:19:24 2017 +0200
+
+    Imported from CVS
