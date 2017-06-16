@@ -40,14 +40,6 @@ List shullDeltri(NumericVector x, NumericVector y) {
       cc=circum(x[tXYZ.i1[i]],y[tXYZ.i1[i]],
 		x[tXYZ.i2[i]],y[tXYZ.i2[i]],
 		x[tXYZ.i3[i]],y[tXYZ.i3[i]]);
-
-      tXYZ.i1[i]++; // start enumeration with 1 in R
-      tXYZ.i2[i]++;
-      tXYZ.i3[i]++;
-      tXYZ.xc[i]=cc.xc;
-      tXYZ.yc[i]=cc.yc;
-      tXYZ.rc[i]=cc.rc;
-      tXYZ.ar[i]=cc.ar;
       // inscribed radius: area/k , k=1/2(la+lb+lc)
       // ratio=
       double ir=cc.ar/(0.5*(sqrt((x[tXYZ.i2[i]]-x[tXYZ.i1[i]])*
@@ -63,6 +55,14 @@ List shullDeltri(NumericVector x, NumericVector y) {
 				 (y[tXYZ.i1[i]]-y[tXYZ.i3[i]])*
 				 (y[tXYZ.i1[i]]-y[tXYZ.i3[i]]))));
       tXYZ.rt[i]=ir/cc.rc;
+      
+      tXYZ.i1[i]++; // start enumeration with 1 in R, ATTENTION:
+      tXYZ.i2[i]++; // from now to exiting this function do not access
+      tXYZ.i3[i]++; // x or y elements through  tXYZ.i1, tXYZ.i2, tXYZ.i3 !!!
+      tXYZ.xc[i]=cc.xc;
+      tXYZ.yc[i]=cc.yc;
+      tXYZ.rc[i]=cc.rc;
+      tXYZ.ar[i]=cc.ar;
     }
     // get convex hull and arcs
     std::vector<int> cp1=std::vector<int>(nx);
@@ -74,18 +74,18 @@ List shullDeltri(NumericVector x, NumericVector y) {
     for(int i=0; i<nT; i++){
       // store arcs on convexhull if triangle neighbour is indexed as -1
       if(tXYZ.j1[i]==-1){
-        cp1[nCH]=tXYZ.i2[i];
-        cp2[nCH]=tXYZ.i3[i];
+        cp1[nCH]=tXYZ.i2[i];  
+        cp2[nCH]=tXYZ.i3[i];  
         nCH++;
         }
       if(tXYZ.j2[i]==-1){
-        cp1[nCH]=tXYZ.i3[i];
-        cp2[nCH]=tXYZ.i1[i];
+        cp1[nCH]=tXYZ.i3[i];  
+        cp2[nCH]=tXYZ.i1[i];  
         nCH++;
       }
       if(tXYZ.j3[i]==-1){
-        cp1[nCH]=tXYZ.i1[i];
-        cp2[nCH]=tXYZ.i2[i];
+        cp1[nCH]=tXYZ.i1[i]; 
+        cp2[nCH]=tXYZ.i2[i]; 
         nCH++;
       }
     }
@@ -113,21 +113,21 @@ List shullDeltri(NumericVector x, NumericVector y) {
       // store arcs if not already done:
       bool found=false;
       for(int j=0; j<ia; j++){
-        if(tXYZ.a1[j]==tXYZ.i3[i] & tXYZ.a2[j]==tXYZ.i2[i]){
+        if(tXYZ.a1[j]==tXYZ.i3[i] & tXYZ.a2[j]==tXYZ.i2[i]){ 
           found=true;
           tXYZ.k1[i]=j;
           break;
         }
       }
       if(!found){
-        tXYZ.a1[ia]=tXYZ.i2[i];
-        tXYZ.a2[ia]=tXYZ.i3[i];
+        tXYZ.a1[ia]=tXYZ.i2[i];  
+        tXYZ.a2[ia]=tXYZ.i3[i];  
         tXYZ.k1[i]=ia;
         ia++;
       }
       found=false;
       for(int j=0; j<ia; j++){
-        if(tXYZ.a1[j]==tXYZ.i1[i] & tXYZ.a2[j]==tXYZ.i3[i]){
+        if(tXYZ.a1[j]==tXYZ.i1[i] & tXYZ.a2[j]==tXYZ.i3[i]){ 
           found=true;
           tXYZ.k2[i]=j;
           break;

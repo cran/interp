@@ -1,8 +1,8 @@
 Package: interp
 Type: Package
 Title: Interpolation Methods
-Version: 1.0-27
-Date: 2017-06-15
+Version: 1.0-28
+Date: 2017-06-16
 Authors@R: c(person("Albrecht", "Gebhardt", role = c("aut", "cre", "cph"),
                      email = "albrecht.gebhardt@aau.at",
                      comment = "..."),
@@ -11,16 +11,34 @@ Authors@R: c(person("Albrecht", "Gebhardt", role = c("aut", "cre", "cph"),
             person("David", "Sinclair", role = c("aut","cph"),
                      email = "david@s-hull.org"))
 Maintainer: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
-Description: Bivariate data interpolation 
-        on regular and irregular grids, either linear or using splines.
+Description: Bivariate data interpolation on regular and irregular
+  grids, either linear or using splines are the main part of this
+  package.  It is intended to provide FOSS replacement functions for
+  the ACM licensed akima::interp and tripack::tri.mesh functions.
+  Currently the piecewise linear interpolation part of akima::interp
+  (and also akima::interpp) is implemented in interp::interp, this
+  corresponds to the call akima::interp(..., linear=TRUE) which is the
+  default setting and covers most of akima::interp use cases in
+  depending packages.  A re-implementation of Akimas spline
+  interpolation (akima::interp(..., linear=FALSE)) is currently under
+  development and will complete this package in a later
+  version. Estimators for partial derivatives are already available,
+  these are a prerequisite for the spline interpolation.  The basic
+  part is currently a GPLed triangulation algorithm (sweep hull
+  algorithm by David Sinclair) providing the starting point for the
+  piecewise linear interpolator. As side effect this algorithm is also
+  used to provide replacements for the basic functions of the tripack
+  package which also suffer from the ACM restrictions.  All functions
+  are designed to be backward compatible with their akima / tripack
+  counterparts.
 License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.9), deldir
 Suggests: sp, Deriv
 LinkingTo: Rcpp, RcppEigen
 NeedsCompilation: yes
-Packaged: 2017-06-15 19:21:19 UTC; alge
+Packaged: 2017-06-16 14:09:02 UTC; alge
 Author: Albrecht Gebhardt [aut, cre, cph] (...),
   Roger Bivand [aut],
   David Sinclair [aut, cph]
 Repository: CRAN
-Date/Publication: 2017-06-15 23:19:45 UTC
+Date/Publication: 2017-06-17 00:13:10 UTC

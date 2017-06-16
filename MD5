@@ -1,5 +1,5 @@
 1a7bfcc19f459ca1dcb2ca0c707d623f *ChangeLog
-46dd3b30c42f42a984272b6bb435392d *DESCRIPTION
+2ce8443b917eaa861babc3d0c894b9a3 *DESCRIPTION
 1293b06dcd180d63832825524293caed *NAMESPACE
 d836fdae3160d04afe7e7a9faa42e167 *R/RcppExports.R
 9366104c7af32ceb91f8057f5a8ae994 *R/circles.R
@@ -61,4 +61,4 @@ ab5107215431b95a975fceb6a45852fc *src/interp.cpp
 ccb5ebc0596cb872789b6478c22701a3 *src/partDeriv.cpp
 fb383de33533f716db1edd9e67690ba5 *src/s_hull_pro.cpp
 c4ef693425385d79657efad527db9abb *src/s_hull_pro.h
-11493dc188f4b8b071d3b2c697250c4e *src/shullDeltri.cpp
+04467d021c56599c2e6be053e6bafe7a *src/shullDeltri.cpp
