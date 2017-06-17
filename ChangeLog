@@ -1,3 +1,34 @@
+commit 78f12595350f67f171a5b16d841ca89430a65ecc
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Sat Jun 17 12:43:25 2017 +0200
+
+    eliminate second memory problem
+
+commit 7ae9e390014fde5ab1ae255b2b39acb240d7bad6
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Fri Jun 16 19:08:57 2017 +0200
+
+    update Changelog
+
+commit 445bf2b942453acca1aa5949fef28e0cc1ecb75c
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Fri Jun 16 19:04:36 2017 +0200
+
+    * add more details to description
+    * fix index offset by one
+
+commit 6b5585a0bce0ec57f5371f1f8fecf2ea70edefee
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Thu Jun 15 17:12:58 2017 +0200
+
+    next typo
+
+commit 4e4c0c23c49e08f293349c5c38f662e1ef762290
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Thu Jun 15 17:11:32 2017 +0200
+
+    prepare for upload
+
 commit cc970d97d907b8e417466be8f59fc7ec95313be4
 Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
 Date:   Thu Jun 15 17:07:52 2017 +0200

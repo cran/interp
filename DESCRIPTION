@@ -1,8 +1,8 @@
 Package: interp
 Type: Package
 Title: Interpolation Methods
-Version: 1.0-28
-Date: 2017-06-16
+Version: 1.0-29
+Date: 2017-06-17
 Authors@R: c(person("Albrecht", "Gebhardt", role = c("aut", "cre", "cph"),
                      email = "albrecht.gebhardt@aau.at",
                      comment = "..."),
@@ -36,9 +36,9 @@ Imports: Rcpp (>= 0.12.9), deldir
 Suggests: sp, Deriv
 LinkingTo: Rcpp, RcppEigen
 NeedsCompilation: yes
-Packaged: 2017-06-16 14:09:02 UTC; alge
+Packaged: 2017-06-17 10:44:44 UTC; alge
 Author: Albrecht Gebhardt [aut, cre, cph] (...),
   Roger Bivand [aut],
   David Sinclair [aut, cph]
 Repository: CRAN
-Date/Publication: 2017-06-17 00:13:10 UTC
+Date/Publication: 2017-06-17 14:34:06 UTC

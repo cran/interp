@@ -1,5 +1,5 @@
-1a7bfcc19f459ca1dcb2ca0c707d623f *ChangeLog
-2ce8443b917eaa861babc3d0c894b9a3 *DESCRIPTION
+18e49ba3d69edc3cefef53dd2786da75 *ChangeLog
+0b82f773ebb6495d137255510070ad2e *DESCRIPTION
 1293b06dcd180d63832825524293caed *NAMESPACE
 d836fdae3160d04afe7e7a9faa42e167 *R/RcppExports.R
 9366104c7af32ceb91f8057f5a8ae994 *R/circles.R
@@ -58,7 +58,7 @@ be4edf843d59c15c40dcea1800f3ce3f *man/voronoi.mosaic.Rd
 90dccc6c3a7d2bb198428c7774a64a4a *src/init.c
 ab5107215431b95a975fceb6a45852fc *src/interp.cpp
 2b728c6c0c01099dc5f68ea698ca70fa *src/interp.h
-ccb5ebc0596cb872789b6478c22701a3 *src/partDeriv.cpp
+1aeb107e9712da40b77e6723382cfc9a *src/partDeriv.cpp
 fb383de33533f716db1edd9e67690ba5 *src/s_hull_pro.cpp
 c4ef693425385d79657efad527db9abb *src/s_hull_pro.h
 04467d021c56599c2e6be053e6bafe7a *src/shullDeltri.cpp

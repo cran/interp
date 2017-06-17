@@ -392,8 +392,9 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
     const VectorXd resid(yd - fitted);
     const int df(n - p);
     const double s(resid.norm() / std::sqrt(double(df)));
-    pde.se=W.inverse()*(s * llt.matrixL().solve(MatrixXd::Identity(p, p))
-                        .colwise().norm());
+    // FIXME
+    //pde.se=W.inverse()*(s * llt.matrixL().solve(MatrixXd::Identity(p, p))
+    //                    .colwise().norm());
   } else
     // if(solver=="LDLt"){
     // } else
@@ -403,8 +404,9 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
       pde.betahat=QR.solve(yd);
       //const VectorXd fitted(Xm * pde.betahat);
       //const int df(n - p);
-      pde.se=W.inverse()*(QR.matrixQR().topRows(p).triangularView<Upper>()
-                          .solve(MatrixXd::Identity(p,p)).rowwise().norm());
+      // FIXME: memory errors detected by ASAN and valgrind:
+      //pde.se=W.inverse()*(QR.matrixQR().topRows(p).triangularView<Upper>()
+      //                    .solve(MatrixXd::Identity(p,p)).rowwise().norm());
     } else
       if(solver=="SVD"){
         // this is the SVD based solver, section 4.4:
@@ -417,7 +419,8 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
         const VectorXd resid(yd - fitted);
         const int df(nD - p);
         const double s(resid.norm() / std::sqrt(double(df)));
-        pde.se=W.inverse()*(s * VDp.rowwise().norm());
+	// FIXME
+        // pde.se=W.inverse()*(s * VDp.rowwise().norm());
       } else
         if(solver=="Eigen"){
           // this is the eigen decomposition based solver, section 4.5:
@@ -430,7 +433,8 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
           const VectorXd resid(yd - fitted);
           const int df(nD - p);
           const double s(resid.norm() / std::sqrt(double(df)));
-          pde.se=W.inverse()*(s * VDp.rowwise().norm());
+	  // FIXME
+          //pde.se=W.inverse()*(s * VDp.rowwise().norm());
         } else
           if(solver=="CPivQR"){
             // this is the column based pivoted QR solver, section 4.6:
@@ -442,8 +446,9 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
               // Rcout << "pQR full rank" << std::endl;
               pde.betahat = PQR.solve(yd);
               //fitted = Xm * pde.betahat;
-              pde.se = W.inverse() * (Pmat * PQR.matrixQR().topRows(p).triangularView<Upper>()
-                                      .solve(MatrixXd::Identity(p, p)).rowwise().norm());
+	      // FIXME
+              //pde.se = W.inverse() * (Pmat * PQR.matrixQR().topRows(p).triangularView<Upper>()
+              //                        .solve(MatrixXd::Identity(p, p)).rowwise().norm());
             } else {
               // Rcout << "pQR no full rank " << r << " < " << Xm.cols() << std::endl;
               MatrixXd Rinv(PQR.matrixQR().topLeftCorner(r, r)
@@ -452,9 +457,10 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
               pde.betahat.fill(::NA_REAL);
               pde.betahat.head(r) = Rinv * effects.head(r);
               pde.betahat = Pmat * pde.betahat;
-              se.fill(::NA_REAL);
-              se.head(r) = Rinv.rowwise().norm();
-              se = W.inverse() * (Pmat * se);
+	      // FIXME
+              //se.fill(::NA_REAL);
+              //se.head(r) = Rinv.rowwise().norm();
+              //se = W.inverse() * (Pmat * se);
               // create fitted values from effects
               //effects.tail(Xm.rows() - r).setZero();
               //fitted = PQR.householderQ() * effects;
@@ -502,12 +508,13 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
 PDEst pDsmooth(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
                double x, double y, CharacterVector kernel, NumericVector h,
                std::string solver, int degree, int n, bool akimaweight){
-  // estimate derivatives for up to n (or better p) nearest neighbours, return average
+  // estimate derivatives for up to n (or better p) nearest neighbours,
+  // return average according to Akimas weigthing scheme
 
   int p;
   if(degree==0)
     p=1; // local constant trend,
-  //FIXME: use Akimas plane through only two points
+  //FIXME: use Akimas plane with only two points, e.g. by
   //else if(degree==0.5)
   //  p=2; //
   else if(degree==1)
