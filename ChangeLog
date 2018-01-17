@@ -1,3 +1,27 @@
+commit 970190c55f73fc160f806d3f3eec2aa74e4b93b1
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Tue Jan 16 21:31:29 2018 +0100
+
+    finally fix -Wreorder problem
+
+commit 32531bc134512722fa131319c6bf8c2534b5861c
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Tue Jan 16 20:21:18 2018 +0100
+
+    bump release
+
+commit cbe34be5565c5985a2fb61f46206324a0baa6fee
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Thu Jan 11 11:34:17 2018 +0100
+
+    fix -Wreorder
+
+commit 0ef7a8b700e5f5c92a20b5adda3425444d10b336
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Sat Jun 17 12:44:05 2017 +0200
+
+    next release
+
 commit 78f12595350f67f171a5b16d841ca89430a65ecc
 Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
 Date:   Sat Jun 17 12:43:25 2017 +0200

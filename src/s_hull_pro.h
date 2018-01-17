@@ -74,8 +74,8 @@ struct Shx
   float r,c, tr,tc;
   float ro;
   Shx() {};
-  Shx(float a, float b) : r(a), c(b), ro(0.0), tr(0.0), tc(0.0), id(-1) {};
-  Shx(float a, float b, float x) : r(a), c(b), ro(x), id(-1), tr(0), tc(0) {};
+  Shx(float a, float b) : id(-1), r(a), c(b), tr(0.0), tc(0.0), ro(0.0) {};
+  Shx(float a, float b, float x) : id(-1), r(a), c(b), tr(0), tc(0), ro(x) {};
   Shx(const Shx &p) : id(p.id), trid(p.trid), r(p.r), c(p.c), tr(p.tr), tc(p.tc), ro(p.ro) {};
 
   Shx &operator=(const Shx &p)
@@ -110,10 +110,10 @@ struct Dupex
 {
   int id;
   float r,c;
-
+    
   Dupex() {};
-  Dupex(float a, float b) : r(a), c(b), id(-1) {};
-  Dupex(float a, float b, int x) : r(a), c(b), id(x) {};
+  Dupex(float a, float b) : id(-1), r(a), c(b) {};
+  Dupex(float a, float b, int x) : id(x), r(a), c(b) {};
   Dupex(const Dupex &p) : id(p.id),  r(p.r), c(p.c) {};
 
   Dupex &operator=(const Dupex &p)
