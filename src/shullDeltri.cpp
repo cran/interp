@@ -113,7 +113,7 @@ List shullDeltri(NumericVector x, NumericVector y) {
       // store arcs if not already done:
       bool found=false;
       for(int j=0; j<ia; j++){
-        if(tXYZ.a1[j]==tXYZ.i3[i] & tXYZ.a2[j]==tXYZ.i2[i]){ 
+        if((tXYZ.a1[j]==tXYZ.i3[i]) & (tXYZ.a2[j]==tXYZ.i2[i])){ 
           found=true;
           tXYZ.k1[i]=j;
           break;
@@ -127,7 +127,7 @@ List shullDeltri(NumericVector x, NumericVector y) {
       }
       found=false;
       for(int j=0; j<ia; j++){
-        if(tXYZ.a1[j]==tXYZ.i1[i] & tXYZ.a2[j]==tXYZ.i3[i]){ 
+        if((tXYZ.a1[j]==tXYZ.i1[i]) & (tXYZ.a2[j]==tXYZ.i3[i])){ 
           found=true;
           tXYZ.k2[i]=j;
           break;
@@ -141,7 +141,7 @@ List shullDeltri(NumericVector x, NumericVector y) {
       }
       found=false;
       for(int j=0; j<ia; j++){
-        if(tXYZ.a1[j]==tXYZ.i2[i] & tXYZ.a2[j]==tXYZ.i1[i]){
+        if((tXYZ.a1[j]==tXYZ.i2[i]) & (tXYZ.a2[j]==tXYZ.i1[i])){
           found=true;
           tXYZ.k3[i]=j;
           break;

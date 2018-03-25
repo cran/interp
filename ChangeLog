@@ -1,3 +1,15 @@
+commit 89a9ac6d92b3fb91a769afb35cb1d06e5e8718a6
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Sun Mar 25 19:18:56 2018 +0200
+
+    fix gcc warnings
+
+commit 86e846acab53cc8ebecf43cb4e98c85d533619b8
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Mon Feb 26 22:20:47 2018 +0100
+
+    enable output="points"
+
 commit 970190c55f73fc160f806d3f3eec2aa74e4b93b1
 Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
 Date:   Tue Jan 16 21:31:29 2018 +0100

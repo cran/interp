@@ -1,5 +1,5 @@
-95eaf8fe2ee4f8e6d6acd36556bfdd7a *ChangeLog
-24b9eb440ea8b7640cd106b503d85fa1 *DESCRIPTION
+56a4595a510f1dc5c72f93d37afb7863 *ChangeLog
+53858378db3ec4425f27e4a39a92095e *DESCRIPTION
 1293b06dcd180d63832825524293caed *NAMESPACE
 d836fdae3160d04afe7e7a9faa42e167 *R/RcppExports.R
 9366104c7af32ceb91f8057f5a8ae994 *R/circles.R
@@ -54,11 +54,11 @@ e662b7d280cf566cf07d657ca8d5ce91 *man/tri.find.Rd
 fc81e7afc72a5c21b8e0bf36debc7a54 *man/voronoi.Rd
 be4edf843d59c15c40dcea1800f3ce3f *man/voronoi.mosaic.Rd
 8083990cf5d0bd3645d398f4c115eece *src/RcppExports.cpp
-3127abf494ad6bca18025bc3fc7474ae *src/common.cpp
+8fd2f228cdce672dc5301f09f795b447 *src/common.cpp
 90dccc6c3a7d2bb198428c7774a64a4a *src/init.c
 ab5107215431b95a975fceb6a45852fc *src/interp.cpp
 2b728c6c0c01099dc5f68ea698ca70fa *src/interp.h
-1aeb107e9712da40b77e6723382cfc9a *src/partDeriv.cpp
+e0eb7eead013b07662e0312d15896a2b *src/partDeriv.cpp
 fb383de33533f716db1edd9e67690ba5 *src/s_hull_pro.cpp
 4d783a74d7ee04ea2161d28a537ab2ce *src/s_hull_pro.h
-04467d021c56599c2e6be053e6bafe7a *src/shullDeltri.cpp
+5c467b4229fc30e4fe46a3aa4a0e576d *src/shullDeltri.cpp

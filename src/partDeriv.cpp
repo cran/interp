@@ -156,7 +156,7 @@ List partDerivPoints(NumericVector x, NumericVector y,
     p=10; // local cubic trend
   else if(degree>3)
     Rf_error("degree>3 !");
-  /*
+  
   // initialize return vectors
   NumericVector Ze = NumericVector(nP);
   NumericVector Zx = NumericVector(nP);
@@ -218,24 +218,23 @@ List partDerivPoints(NumericVector x, NumericVector y,
   }
   
   if(degree==0){
-    ret=List::create(_("Z")=Ze);
+    ret=List::create(_("z")=Ze);
   }
 
   if(degree==1){
-    ret=List::create(_("Z")=Ze, _("Zx")=Zx, _("Zy")=Zy);
+    ret=List::create(_("z")=Ze, _("zx")=Zx, _("zy")=Zy);
   }
 
   if(degree==2){
-    ret=List::create(_("Z")=Ze, _("Zx")=Zx, _("Zy")=Zy,
-                     _("Zxy")=Zxy, _("Zxx")=Zx2, _("Zyy")=Zy2);
+    ret=List::create(_("z")=Ze, _("zx")=Zx, _("zy")=Zy,
+                     _("zxy")=Zxy, _("zxx")=Zx2, _("zyy")=Zy2);
   }
   if(degree==3){
-    ret=List::create(_("Z")=Ze, _("Zx")=Zx, _("Zy")=Zy,
-                     _("Zxy")=Zxy, _("Zxx")=Zx2, _("Zyy")=Zy2,
-                     _("Zxxy")=Zx2y, _("Zxyy")=Zxy2, _("Zxxx")=Zx3, _("Zyyy")=Zy3);
+    ret=List::create(_("z")=Ze, _("zx")=Zx, _("zy")=Zy,
+                     _("zxy")=Zxy, _("zxx")=Zx2, _("zyy")=Zy2,
+                     _("zxxy")=Zx2y, _("zxyy")=Zxy2, _("zxxx")=Zx3, _("zyyy")=Zy3);
   }
-  */
-  return ret=List::create(_("ft")=42);;
+  return ret;
 }
 
 
@@ -247,7 +246,7 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
   int nD=xD.size();
   double xRange=max(xD)-min(xD);
   double yRange=max(yD)-min(yD);
-  if(h.size()!=2 & h.size()!=1)
+  if((h.size()!=2) & (h.size()!=1))
     Rf_error("bandwidth parameter h is not a vector of 2 or 1 elements!");
   double bwX, bwY;
   // global bandwidth:
@@ -955,7 +954,7 @@ NN extendNN(NN nn, NumericVector X, NumericVector Y,
   if(Y.size()!=N)
     Rf_error("sizes of X and Y dont match!");
   //Rcout << nn.ind.rows() << ", " << nn.ind.cols() << ", " << N << std::endl;
-  if(nn.ind.rows()!=N | nn.ind.cols()!=N)
+  if((nn.ind.rows()!=N) | (nn.ind.cols()!=N))
     Rf_error("sizes of nn and X and Y dont match!");
 
   ret.ind=MatrixXi(n+N,n+N).setZero();
@@ -971,7 +970,7 @@ NN extendNN(NN nn, NumericVector X, NumericVector Y,
 
   for(int i=0; i<n+N; i++){
     for(int j=0; j<n+N; j++){
-      if((i<N & j>=N) | (i>+N)){
+      if(((i<N) & (j>=N)) | (i>+N)){
         double dij=sqrt((xtmp[i]-xtmp[j])*(xtmp[i]-xtmp[j])+(ytmp[i]-ytmp[j])*(ytmp[i]-ytmp[j]));
         //Rcout << "dist: " << dij << std::endl;
         // simply record first  neighbour
