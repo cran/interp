@@ -1,3 +1,29 @@
+commit 3209782a6d30e6e4135e5845eab8673a508009b8
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Fri May 3 22:44:41 2019 +0200
+
+    fix problems revealed by R 3.6, options all and isometric now compatible
+
+commit 30383e0838e0c95e69bf43cf660367359a984a8d
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Fri May 3 19:52:40 2019 +0200
+
+    * port some additional functions related to voronoi moasics from tripack package.
+    
+    * default to isometric plots for voronoi mosaics
+
+commit 62a898c289349480b682219f79e1507e8242acb2
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Sun Mar 25 22:15:03 2018 +0200
+
+    update date field
+
+commit 3cb0c5dc78b0d1b15f03ef8207069aaa54b5066d
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Sun Mar 25 20:00:16 2018 +0200
+
+    changelog updated
+
 commit 89a9ac6d92b3fb91a769afb35cb1d06e5e8718a6
 Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
 Date:   Sun Mar 25 19:18:56 2018 +0200

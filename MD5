@@ -1,6 +1,6 @@
-56a4595a510f1dc5c72f93d37afb7863 *ChangeLog
-53858378db3ec4425f27e4a39a92095e *DESCRIPTION
-1293b06dcd180d63832825524293caed *NAMESPACE
+a161cf6ab66fdea4947afd53c3baa49b *ChangeLog
+31bfd11e868ae98f56db2c11ea173f37 *DESCRIPTION
+c229e70a6b911b54cfcb08dd8f05077f *NAMESPACE
 d836fdae3160d04afe7e7a9faa42e167 *R/RcppExports.R
 9366104c7af32ceb91f8057f5a8ae994 *R/circles.R
 43d0e424d86ed1e7d650b9bbb2869dc0 *R/convex.hull.R
@@ -12,7 +12,8 @@ f8ab1118c742eef6fd740bbf7f4f0073 *R/interp.R
 6a98a58847c9310f1367c87b52e9d0c5 *R/on.convex.hull.R
 3ce539dcf54744edded619a2beab96ce *R/outer.convex.hull.R
 dd03dca8395dff9ab94e71cbcc594ce6 *R/plot.triSht.R
-77547e55ae04ad3c30e031d765cf67b8 *R/plot.voronoi.R
+499b778135539d8360f8e8d0299ee0bc *R/plot.voronoi.R
+c88829a91eb96202cd2235eb4e885074 *R/plot.voronoi.polygons.R
 a2b17f0993309151115b18d1c7325159 *R/print.summary.triSht.R
 3bc54bdc34cdaf0478d68e8636ba6bda *R/print.summary.voronoi.R
 2794c2f770e3b837310d4e622f3eb09a *R/print.triSht.R
@@ -22,7 +23,10 @@ fc70baa8e7e0469733345b3a491f3f87 *R/print.voronoi.R
 8e509a7f5f682bf8059fc0f063bf9c39 *R/tri.find.R
 0aa4f93ca29eeebdc428e2c3996785b3 *R/tri.mesh.R
 c62d100fb0ce52349152cc2a92761d47 *R/triangles.R
+fb9249df5cd29bdc56eae7f32a8c0eed *R/voronoi.area.R
+38d760fef74d77d7c357d28103e8b682 *R/voronoi.findrejectsites.R
 e7adb787c0c8ba474d5b1150ee15e298 *R/voronoi.mosaic.R
+c4121448ccfe6336aa3e5af236015eb5 *R/voronoi.polygons.R
 0c7f664a0a380d50654b4c4cff598830 *README
 91bf0772cf7358446293ab6445fe6b72 *data/franke.rda
 f735aee020bdf2df7fa80d0f6f5ce932 *man/arcs.Rd
@@ -40,7 +44,8 @@ f51e4208d047074637cf5c2a0e2891af *man/nearest.neighbours.Rd
 80aa65b78cb7f20e13bcdc7d287ee5b2 *man/on.convex.hull.Rd
 f12752daa55efd48cb12aa3ae49fae11 *man/outer.convhull.Rd
 faeade4dc43d56685d3badfbc134046a *man/plot.triSht.Rd
-3782f760fddb590551b65f29bd3d1e01 *man/plot.voronoi.Rd
+df8b271b5dc86553b8b502447a3260ac *man/plot.voronoi.Rd
+d25f498cbf1b3246dcbfdf18bcba6460 *man/plot.voronoi.polygons.Rd
 aa7badd271063cb2d27daa806e0739a3 *man/print.summary.triSht.Rd
 2757c161ced4fd601e118b16ce6a440e *man/print.summary.voronoi.Rd
 93b0f84796f548e5f96096acc0d73862 *man/print.triSht.Rd
@@ -52,7 +57,10 @@ e662b7d280cf566cf07d657ca8d5ce91 *man/tri.find.Rd
 32d4c1e1e1e0ccea67bf2359cd46f3dc *man/triSht.Rd
 66896cb15230471ef82e28acc91109dd *man/triangles.Rd
 fc81e7afc72a5c21b8e0bf36debc7a54 *man/voronoi.Rd
+7681e4f9326438ca97f380192d37d008 *man/voronoi.area.Rd
+a9ed1de2f01c84de3156ed8d15e84806 *man/voronoi.findrejectsites.Rd
 be4edf843d59c15c40dcea1800f3ce3f *man/voronoi.mosaic.Rd
+ee36cf86ad5120f0fc6c85e1c1fd2bea *man/voronoi.polygons.Rd
 8083990cf5d0bd3645d398f4c115eece *src/RcppExports.cpp
 8fd2f228cdce672dc5301f09f795b447 *src/common.cpp
 90dccc6c3a7d2bb198428c7774a64a4a *src/init.c
