@@ -453,11 +453,18 @@ LogicalVector inHull(List triObj,
   LogicalVector lft;
 
 
-  for(int j=0; j<nCH-1; j++){
-    //Rcout << "j=" << j << " : " << xD[ch[j]-1] << ", " << yD[ch[j]-1] << ", " << xD[ch[j+1]-1] << ", " << yD[ch[j+1]-1] << std::endl;
-    lft=left(xD[ch[j]-1],yD[ch[j]-1],xD[ch[j+1]-1],yD[ch[j+1]-1],x,y,eps);
-    for(int i=0; i<n; i++){
-      ret[i]=ret[i] & lft[i];
+  for(int j=0; j<nCH; j++){
+    if(j<nCH-1){
+      lft=left(xD[ch[j]-1],yD[ch[j]-1],xD[ch[j+1]-1],yD[ch[j+1]-1],x,y,eps);
+      for(int i=0; i<n; i++){
+	ret[i]=ret[i] & lft[i];
+      }
+    } else {
+      // last segment closing the hull:
+      lft=left(xD[ch[j]-1],yD[ch[j]-1],xD[ch[0]-1],yD[ch[0]-1],x,y,eps);
+      for(int i=0; i<n; i++){
+	ret[i]=ret[i] & lft[i];
+      }
     }
   }
 
@@ -482,11 +489,17 @@ LogicalVector onHull(List triObj,
   LogicalVector onH;
 
 
-  for(int j=0; j<nCH-1; j++){
-    //Rcout << "j=" << j << " : " << xD[ch[j]-1] << ", " << yD[ch[j]-1] << ", " << xD[ch[j+1]-1] << ", " << yD[ch[j+1]-1] << std::endl;
-    onH=on(xD[ch[j]-1],yD[ch[j]-1],xD[ch[j+1]-1],yD[ch[j+1]-1],x,y,eps);
-    for(int i=0; i<n; i++){
-      ret[i]=ret[i] | onH[i];
+  for(int j=0; j<nCH; j++){
+    if(j<nCH-1){
+      onH=on(xD[ch[j]-1],yD[ch[j]-1],xD[ch[j+1]-1],yD[ch[j+1]-1],x,y,eps);
+      for(int i=0; i<n; i++){
+	ret[i]=ret[i] | onH[i];
+      }
+    } else {
+      onH=on(xD[ch[j]-1],yD[ch[j]-1],xD[ch[0]-1],yD[ch[0]-1],x,y,eps);
+      for(int i=0; i<n; i++){
+	ret[i]=ret[i] | onH[i];
+      }
     }
   }
 

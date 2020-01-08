@@ -1,12 +1,12 @@
-a161cf6ab66fdea4947afd53c3baa49b *ChangeLog
-31bfd11e868ae98f56db2c11ea173f37 *DESCRIPTION
+e2a3857ed2433b8a8fe6cc23a74c7852 *ChangeLog
+f77092a27c8a24e02b36546bcbcc6774 *DESCRIPTION
 c229e70a6b911b54cfcb08dd8f05077f *NAMESPACE
 d836fdae3160d04afe7e7a9faa42e167 *R/RcppExports.R
 9366104c7af32ceb91f8057f5a8ae994 *R/circles.R
 43d0e424d86ed1e7d650b9bbb2869dc0 *R/convex.hull.R
 120c6e6c07d4a97e1d3cf159328e3120 *R/franke.R
 6da3b8ed056ddb8eb682c056ebfcfa43 *R/identify.triSht.R
-e1efac3c56951184208e06faf8ddabde *R/in.convex.hull.R
+c4875927ee0ae3bd24ac92dcb7d6f2dd *R/in.convex.hull.R
 f8ab1118c742eef6fd740bbf7f4f0073 *R/interp.R
 9833f5522f2e5202b2d689d6407acfb1 *R/locpoly.R
 6a98a58847c9310f1367c87b52e9d0c5 *R/on.convex.hull.R
@@ -41,7 +41,7 @@ ac912bc7eb77ad9de41acb8bc5ac53ee *man/identify.tri.Rd
 13d42d063c835ffc669eea36f0f0a67f *man/locpoly.Rd
 f51e4208d047074637cf5c2a0e2891af *man/nearest.neighbours.Rd
 99f41c8ed9e06f53eab3bdb4ebbe93aa *man/on.Rd
-80aa65b78cb7f20e13bcdc7d287ee5b2 *man/on.convex.hull.Rd
+d681503a4707c54da35d76844c4ece12 *man/on.convex.hull.Rd
 f12752daa55efd48cb12aa3ae49fae11 *man/outer.convhull.Rd
 faeade4dc43d56685d3badfbc134046a *man/plot.triSht.Rd
 df8b271b5dc86553b8b502447a3260ac *man/plot.voronoi.Rd
@@ -69,4 +69,4 @@ ab5107215431b95a975fceb6a45852fc *src/interp.cpp
 e0eb7eead013b07662e0312d15896a2b *src/partDeriv.cpp
 fb383de33533f716db1edd9e67690ba5 *src/s_hull_pro.cpp
 4d783a74d7ee04ea2161d28a537ab2ce *src/s_hull_pro.h
-5c467b4229fc30e4fe46a3aa4a0e576d *src/shullDeltri.cpp
+d043e562f24c428884afd53b59d3aed7 *src/shullDeltri.cpp

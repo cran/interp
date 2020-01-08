@@ -1,5 +1,5 @@
 
-in.convex.hull<-function(tri.obj,x,y,eps=1E-16)
+in.convex.hull<-function(tri.obj,x,y,eps=1E-16,strict=TRUE)
 {
   if(!inherits(tri.obj,"triSht"))
     stop("tri.obj must be of class \"triSht\"")
@@ -9,6 +9,8 @@ in.convex.hull<-function(tri.obj,x,y,eps=1E-16)
   if(n==0)
     stop("length of x (resp. y) is 0")
   inhull <- inHull(tri.obj,x,y,eps)
+  if(!strict)
+      inhull <- inhull | onHull(tri.obj,x,y,eps)
   inhull
 }
 

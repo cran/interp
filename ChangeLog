@@ -1,3 +1,23 @@
+commit 067ca3855957c4c1b92164a296226515d634fb93
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Tue Jan 7 22:15:22 2020 +0100
+
+    add a strict mode (default equal to old behaviour) to in.convex.hull.
+    When switched off, also points on the border are treated as belonging
+    to the hull.
+
+commit 2fb7a4b7406ce614c6da71bd4644dd23907368ad
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Tue Jan 7 12:33:56 2020 +0100
+
+    fix in.convex.hull (path was not closed before checking!)
+
+commit e4b8fc73220c3aab05a9d8eaa7c9a97e2ff49af3
+Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
+Date:   Fri May 3 22:46:58 2019 +0200
+
+    update ChangeLog
+
 commit 3209782a6d30e6e4135e5845eab8673a508009b8
 Author: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
 Date:   Fri May 3 22:44:41 2019 +0200
@@ -160,8 +180,8 @@ Date:   Sat Jun 10 15:15:52 2017 +0200
     Merge branch 'master' of gitlab.aau.at:agebhard/interp
     
     Conflicts:
-    	DESCRIPTION
-    	man/interp.Rd
+            DESCRIPTION
+            man/interp.Rd
 
 commit 5919aa297c52b2fff2a983ab14ba9c2f1c52208f
 Author: Albrecht Gebhardt <ALGEPOP\alge@algepop.net>
