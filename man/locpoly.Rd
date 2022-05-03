@@ -6,7 +6,9 @@
 \description{
   This function performs a local polynomial fit of up to order 3 to
   bivariate data. It returns estimated values of the regression function
-  as well as estimated partial derivatives up to order 3.
+  as well as estimated partial derivatives up to order 3. This access to the 
+  partial derivatives was the main intent for writing this code as there already
+  many other local polynomial regression implementations in R.
 }
 \usage{
 locpoly(x, y, z, xo = seq(min(x), max(x), length = nx), yo = seq(min(y),
@@ -18,6 +20,7 @@ locpoly(x, y, z, xo = seq(min(x), max(x), length = nx), yo = seq(min(y),
     vector of \eqn{x}-coordinates of data points.
 
     Missing values are not accepted.
+
 }
   \item{y}{
     vector of \eqn{y}-coordinates of data points.

@@ -13,7 +13,10 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
        linear = (method == "linear"), extrap = FALSE,
        duplicate = "error", dupfun = NULL,
        nx = 40, ny = 40, input="points", output = "grid",
-       method = "linear", deltri = "shull")
+       method = "linear", deltri = "shull", h=0,
+       kernel="uniform", solver="QR", degree=3,
+       baryweight=TRUE, autodegree=FALSE, adtol=0.1,
+       smoothpde=TRUE, akimaweight=TRUE, nweight=25)
 }
 \arguments{
   \item{x}{
@@ -94,8 +97,7 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
   \item{linear}{
     logical, only for backward compatibility with \code{akima::interp},
     indicates if piecewise linear interpolation or Akima splines should be
-    used. Warning: in this release only \code{linear=TRUE} is
-    implemented!
+    used. 
 
     Please use the new \code{method} argument instead!
   }
@@ -104,7 +106,9 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     developement) \code{"linear"} (piecewise linear interpolation within
     the triangles of the Delauney triangulation, also
     referred to as barycentric interpolation based on barycentric 
-    coordinates).
+    coordinates) and \code{"akima"} (a reimplementation for Akimas spline 
+    algorithms for irregular gridded data with the accuracy of a 
+    bicubic polynomial).
 
     This replaces the old \code{linear} argument of \code{akima::interp}.
   }
@@ -138,6 +142,22 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     interpolation! Possible values are \code{"shull"} (default, sweep 
     hull algorithm) and \code{"deldir"} (uses package\code{deldir}).
   }
+  \item{h}{bandwidth for partial derivatives estimation}
+
+  \item{kernel}{kernel for partial derivatives estimation}
+
+  \item{solver}{solver used in partial derivatives estimation}
+  \item{degree}{degree of local polynomial used for partial derivatives
+    estimation}
+  \item{baryweight}{calculate three partial derivatives estimatiors and
+    weight them}
+  \item{autodegree}{try to reduce degree automatically}
+  \item{adtol}{used for autodegree}
+  \item{smoothpde}{FIXME}
+
+  \item{akimaweight}{apply Akima weighting scheme on partial derivatives
+    estimations}
+  \item{nweight}{size of search neighbourhood for weighting scheme}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -167,7 +187,7 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     If the input was a \code{SpatialPointsDataFrame} a
     \code{SpatialPixelsDataFrame} is returned for \code{output="grid"}
     and a  \code{SpatialPointsDataFrame}  for \code{output="points"}.
-    }
+  }
 }
 \references{
   Moebius, A. F. (1827) Der barymetrische Calcul. Verlag v. Johann
@@ -179,14 +199,26 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
   Postgraduate School, Monterey, Calif.
 
 
+  Akima, H. (1978). A Method of Bivariate Interpolation and
+  Smooth Surface Fitting for Irregularly Distributed Data Points.
+  ACM Transactions on Mathematical Software \bold{4}, 148-164.
+
+  Akima, H. (1996). Algorithm 761: scattered-data surface fitting that has
+  the accuracy of a cubic polynomial.
+  ACM Transactions on Mathematical Software \bold{22}, 362--371.
+
 }
 \author{
   Albrecht Gebhardt <albrecht.gebhardt@aau.at>,
   Roger Bivand <roger.bivand@nhh.no>
 }
-%\note{
-%%  ~~further notes~~
-%}
+\note{
+Please note that this function tries to be a replacement for the interp() function 
+from the akima package. So it should be call compatible for most applications. 
+It also offers additional tuning parameters, usually the default settings will fit.
+Please be aware that these additional parameters may change in the future as they are
+still under development.
+}
 
 \seealso{
   \code{\link{interpp}}

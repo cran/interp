@@ -9,7 +9,8 @@
 
   This function is meant for backward compatibility to package
   \code{akima}, please use \code{\link{interp}} with its \code{output}
-  argument set to \code{"points"} now.
+  argument set to \code{"points"} now. Especially newer options to the underlying
+  algorithm are only available there.
 }
 \usage{
 interpp(x, y = NULL, z, xo, yo = NULL, linear = TRUE,

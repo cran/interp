@@ -265,7 +265,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
   Shx pt1 = pts[1];
   Shx pt2 = pts[mid];
 
-  int ptest = test_center(pt0, pt1, pt2 );
+  //int ptest = test_center(pt0, pt1, pt2 );
   //if( ptest < 0 ){
     // cerr << "warning: obtuce seed triangle sellected " << endl;
   //}
@@ -369,7 +369,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
 
   float dr, dc, rx,cx;
   Shx  ptx;
-  int numt;
+  int numt=0;
 
   //  write_Triads(triads, "rose_0.mat");
 
@@ -379,7 +379,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
     ptx.c = cx;
     ptx.id = pts[k].id;
 
-    int numh = (int) hull.size(), numh_old = numh;
+    int numh = (int) hull.size(); //, numh_old = numh;
     dr = rx- hull[0].r;    dc = cx- hull[0].c;  // outwards pointing from hull[0] to pt.
 
     std::vector<int> pidx, tridx;
@@ -388,7 +388,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
 
     float df = -dc* hull[0].tr + dr*hull[0].tc;    // visibility test vector.
     if( df < 0 ){  // starting with a visible hull facet !!!
-      int e1 = 1, e2 = numh;
+      // int e1 = 1, e2 = numh;
       hidx = 0;
 
       // check to see if segment numh is also visible
@@ -842,8 +842,8 @@ int T_flip_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, std::vector<i
       }
 
 
-      if( pd < 0 || pd > 100)
-	int dfx = 9;
+      //if( pd < 0 || pd > 100)
+	//int dfx = 9;
 
       r3 = pts[pd].r;
       c3 = pts[pd].c;
@@ -1156,7 +1156,7 @@ int Cline_Renka_test(float &Ax, float &Ay,
   if( cosA < 0 && cosD < 0 ) // two obtuse angles
     return(-1);
 
-  float ADX = Ax-Dx, ADy = Ay-Dy;
+  // float ADX = Ax-Dx, ADy = Ay-Dy;
 
 
   if( cosA > 0 && cosD > 0 )  // two acute angles
@@ -1700,8 +1700,8 @@ int T_flip_edge( std::vector<Shx> &pts, std::vector<Triad> &triads, std::vector<
       }
 
 
-      if( pd < 0 || pd > 100)
-	int dfx = 9;
+      //if( pd < 0 || pd > 100)
+	//int dfx = 9;
 
       r3 = pts[pd].r;
       c3 = pts[pd].c;

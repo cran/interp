@@ -11,8 +11,15 @@ interp <- function(x, y=NULL, z,
                    yo = seq(min(y), max(y), length = ny),
                    linear = (method=="linear"), extrap = FALSE,
                    duplicate = "error", dupfun = NULL,
-                   nx=40, ny=40, input="points", output = "grid",
-                   method="linear", deltri="shull")
+                   nx = 40, ny = 40, input = "points", output = "grid",
+                   method="linear", deltri="shull",
+                   h=0, kernel="uniform", solver="QR", degree=3,
+                   baryweight=TRUE,
+                   autodegree=FALSE,
+                   adtol=0.1,
+                   smoothpde=TRUE,
+                   akimaweight=TRUE,
+                   nweight=25)
     {
         if(method=="linear")
             linear <- TRUE
@@ -22,7 +29,7 @@ interp <- function(x, y=NULL, z,
         sp.z <- NULL
         sp.proj4string <- NULL
         if(is.null(y)&&is.character(z)){
-            if(class(x)=="SpatialPointsDataFrame" &&
+            if(inherits(x,"SpatialPointsDataFrame") &&
                 requireNamespace("sp", quietly=TRUE)) {
                 sp.coord <- dimnames(sp::coordinates(x))[[2]]
                 sp.z <- z
@@ -47,40 +54,46 @@ interp <- function(x, y=NULL, z,
         n <- length(x)
         nx <- length(xo)
         ny <- length(yo)
-        if(length(y) != n || length(z) != n)
+        if(input=="points" && (length(y) != n || length(z) != n))
             stop("Lengths of x, y, and z do not match")
-
-        dups_found <- isTRUE(anyDuplicated(cbind(x, y), MARGIN=1) != 0L)
-        if (dups_found) {
-            if(duplicate == "error") {
-                stop("duplicate data points: need to set 'duplicate = ..' ")
-            }   else { ## duplicate != "error"
-
-                xy <- paste(x, y, sep = ",") # trick for 'duplicated' (x,y)-pairs
-                i <- match(xy, xy)
-                if(duplicate == "user")
-                    dupfun <- match.fun(dupfun)#> error if it fails
-
-                ord <- !duplicated(xy)
-                if(duplicate != "strip") {
-                    centre <- function(x)
-                        switch(duplicate,
-                               mean = mean(x),
-                               median = median(x),
-                               user = dupfun(x))
-                    z <- unlist(lapply(split(z,i), centre))
-                } else {
-                    z <- z[ord]
-                }
-                x <- x[ord]
-                y <- y[ord]
-                n <- length(x)
-            }
+        if(input=="points"){
+           dups_found <- isTRUE(anyDuplicated(cbind(x, y), MARGIN=1) != 0L)
+           if (dups_found) {
+               if(duplicate == "error") {
+                   stop("duplicate data points: need to set 'duplicate = ..' ")
+               }   else { ## duplicate != "error"
+        
+                   xy <- paste(x, y, sep = ",") # trick for 'duplicated' (x,y)-pairs
+                   i <- match(xy, xy)
+                   if(duplicate == "user")
+                       dupfun <- match.fun(dupfun)#> error if it fails
+        
+                   ord <- !duplicated(xy)
+                   if(duplicate != "strip") {
+                       centre <- function(x)
+                           switch(duplicate,
+                                  mean = mean(x),
+                                  median = median(x),
+                                  user = dupfun(x))
+                       z <- unlist(lapply(split(z,i), centre))
+                   } else {
+                       z <- z[ord]
+                   }
+                   x <- x[ord]
+                   y <- y[ord]
+                   n <- length(x)
+               }
+           }
         }
+        if(input=="grid"){
+          nxi <- length(x)
+          nyi <- length(y)
 
-        if(method=="linear"|method=="akima"){
-            if(!linear)
-                stop("method=\"akima\" (linear=FALSE) is currently under developement and not yet available!")
+          x<- c(matrix(rep(x,nyi),nrow=nxi,ncol=nyi,byrow=FALSE))
+          y<- c(matrix(rep(y,nxi),nrow=nxi,ncol=nyi,byrow=TRUE))
+	  z<- c(z)
+        }
+        if(method=="linear"||method=="akima"){
 
             if(deltri=="deldir"){
                 if(!linear)
@@ -88,8 +101,13 @@ interp <- function(x, y=NULL, z,
                 triangles <- triang.list(deldir(x=x,y=y,z=z))
                 ans <- interpDeltri(xo,yo,z,triangles,input,output)
             } else if(deltri=="shull"){
-                ans <- interpShull(xo,yo,x,y,z,linear,input,output)
-                if(output=="points") # back to vector friom matrix:
+                ans <- interpShull(xo,yo,x,y,z,linear,input,output,
+                                   kernel,h,
+                                   solver,degree,
+                                   baryweight,
+                                   autodegree,adtol,
+                                   smoothpde,akimaweight,nweight)
+                if(output=="points") # back to vector from matrix:
                     ans$z <- c(ans$z)
             } else
                 stop(paste("unknown triangulation method", deltri))
@@ -116,4 +134,3 @@ interp <- function(x, y=NULL, z,
         }
         ret
     }
-

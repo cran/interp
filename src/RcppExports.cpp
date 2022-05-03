@@ -6,9 +6,41 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
+// aSpline
+List aSpline(NumericVector x, NumericVector y, NumericVector xout, CharacterVector method, int degree);
+RcppExport SEXP _interp_aSpline(SEXP xSEXP, SEXP ySEXP, SEXP xoutSEXP, SEXP methodSEXP, SEXP degreeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type xout(xoutSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< int >::type degree(degreeSEXP);
+    rcpp_result_gen = Rcpp::wrap(aSpline(x, y, xout, method, degree));
+    return rcpp_result_gen;
+END_RCPP
+}
+// circum
+List circum(NumericVector x, NumericVector y);
+RcppExport SEXP _interp_circum(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(circum(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
 // interpDeltri
 List interpDeltri(NumericVector x, NumericVector y, NumericVector zD, List t, CharacterVector input, CharacterVector output);
-RcppExport SEXP interp_interpDeltri(SEXP xSEXP, SEXP ySEXP, SEXP zDSEXP, SEXP tSEXP, SEXP inputSEXP, SEXP outputSEXP) {
+RcppExport SEXP _interp_interpDeltri(SEXP xSEXP, SEXP ySEXP, SEXP zDSEXP, SEXP tSEXP, SEXP inputSEXP, SEXP outputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,8 +55,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // interpShull
-List interpShull(NumericVector x, NumericVector y, NumericVector xD, NumericVector yD, NumericVector zD, bool linear, CharacterVector input, CharacterVector output);
-RcppExport SEXP interp_interpShull(SEXP xSEXP, SEXP ySEXP, SEXP xDSEXP, SEXP yDSEXP, SEXP zDSEXP, SEXP linearSEXP, SEXP inputSEXP, SEXP outputSEXP) {
+List interpShull(NumericVector x, NumericVector y, NumericVector xD, NumericVector yD, NumericVector zD, bool linear, CharacterVector input, CharacterVector output, CharacterVector kernel, NumericVector h, CharacterVector solver, int degree, bool baryweight, bool autodegree, double adtol, bool smoothpde, bool akimaweight, int nweight);
+RcppExport SEXP _interp_interpShull(SEXP xSEXP, SEXP ySEXP, SEXP xDSEXP, SEXP yDSEXP, SEXP zDSEXP, SEXP linearSEXP, SEXP inputSEXP, SEXP outputSEXP, SEXP kernelSEXP, SEXP hSEXP, SEXP solverSEXP, SEXP degreeSEXP, SEXP baryweightSEXP, SEXP autodegreeSEXP, SEXP adtolSEXP, SEXP smoothpdeSEXP, SEXP akimaweightSEXP, SEXP nweightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -36,13 +68,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type linear(linearSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type input(inputSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type output(outputSEXP);
-    rcpp_result_gen = Rcpp::wrap(interpShull(x, y, xD, yD, zD, linear, input, output));
+    Rcpp::traits::input_parameter< CharacterVector >::type kernel(kernelSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type h(hSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type solver(solverSEXP);
+    Rcpp::traits::input_parameter< int >::type degree(degreeSEXP);
+    Rcpp::traits::input_parameter< bool >::type baryweight(baryweightSEXP);
+    Rcpp::traits::input_parameter< bool >::type autodegree(autodegreeSEXP);
+    Rcpp::traits::input_parameter< double >::type adtol(adtolSEXP);
+    Rcpp::traits::input_parameter< bool >::type smoothpde(smoothpdeSEXP);
+    Rcpp::traits::input_parameter< bool >::type akimaweight(akimaweightSEXP);
+    Rcpp::traits::input_parameter< int >::type nweight(nweightSEXP);
+    rcpp_result_gen = Rcpp::wrap(interpShull(x, y, xD, yD, zD, linear, input, output, kernel, h, solver, degree, baryweight, autodegree, adtol, smoothpde, akimaweight, nweight));
     return rcpp_result_gen;
 END_RCPP
 }
 // partDerivGrid
 List partDerivGrid(NumericVector x, NumericVector y, NumericVector xD, NumericVector yD, NumericVector zD, CharacterVector kernel, NumericVector h, CharacterVector solver, int degree, bool smoothpde, bool akimaweight, int nweight);
-RcppExport SEXP interp_partDerivGrid(SEXP xSEXP, SEXP ySEXP, SEXP xDSEXP, SEXP yDSEXP, SEXP zDSEXP, SEXP kernelSEXP, SEXP hSEXP, SEXP solverSEXP, SEXP degreeSEXP, SEXP smoothpdeSEXP, SEXP akimaweightSEXP, SEXP nweightSEXP) {
+RcppExport SEXP _interp_partDerivGrid(SEXP xSEXP, SEXP ySEXP, SEXP xDSEXP, SEXP yDSEXP, SEXP zDSEXP, SEXP kernelSEXP, SEXP hSEXP, SEXP solverSEXP, SEXP degreeSEXP, SEXP smoothpdeSEXP, SEXP akimaweightSEXP, SEXP nweightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -64,7 +106,7 @@ END_RCPP
 }
 // partDerivPoints
 List partDerivPoints(NumericVector x, NumericVector y, NumericVector xD, NumericVector yD, NumericVector zD, CharacterVector kernel, NumericVector h, CharacterVector solver, int degree, bool smoothpde, bool akimaweight, int nweight);
-RcppExport SEXP interp_partDerivPoints(SEXP xSEXP, SEXP ySEXP, SEXP xDSEXP, SEXP yDSEXP, SEXP zDSEXP, SEXP kernelSEXP, SEXP hSEXP, SEXP solverSEXP, SEXP degreeSEXP, SEXP smoothpdeSEXP, SEXP akimaweightSEXP, SEXP nweightSEXP) {
+RcppExport SEXP _interp_partDerivPoints(SEXP xSEXP, SEXP ySEXP, SEXP xDSEXP, SEXP yDSEXP, SEXP zDSEXP, SEXP kernelSEXP, SEXP hSEXP, SEXP solverSEXP, SEXP degreeSEXP, SEXP smoothpdeSEXP, SEXP akimaweightSEXP, SEXP nweightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -86,7 +128,7 @@ END_RCPP
 }
 // nearestNeighbours
 List nearestNeighbours(NumericVector x, NumericVector y);
-RcppExport SEXP interp_nearestNeighbours(SEXP xSEXP, SEXP ySEXP) {
+RcppExport SEXP _interp_nearestNeighbours(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -98,7 +140,7 @@ END_RCPP
 }
 // shullDeltri
 List shullDeltri(NumericVector x, NumericVector y);
-RcppExport SEXP interp_shullDeltri(SEXP xSEXP, SEXP ySEXP) {
+RcppExport SEXP _interp_shullDeltri(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -110,7 +152,7 @@ END_RCPP
 }
 // triFind
 List triFind(int nT, NumericVector xT, NumericVector yT, IntegerVector i1, IntegerVector i2, IntegerVector i3, NumericVector x, NumericVector y);
-RcppExport SEXP interp_triFind(SEXP nTSEXP, SEXP xTSEXP, SEXP yTSEXP, SEXP i1SEXP, SEXP i2SEXP, SEXP i3SEXP, SEXP xSEXP, SEXP ySEXP) {
+RcppExport SEXP _interp_triFind(SEXP nTSEXP, SEXP xTSEXP, SEXP yTSEXP, SEXP i1SEXP, SEXP i2SEXP, SEXP i3SEXP, SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -128,7 +170,7 @@ END_RCPP
 }
 // left
 LogicalVector left(double x1, double y1, double x2, double y2, NumericVector x0, NumericVector y0, double eps);
-RcppExport SEXP interp_left(SEXP x1SEXP, SEXP y1SEXP, SEXP x2SEXP, SEXP y2SEXP, SEXP x0SEXP, SEXP y0SEXP, SEXP epsSEXP) {
+RcppExport SEXP _interp_left(SEXP x1SEXP, SEXP y1SEXP, SEXP x2SEXP, SEXP y2SEXP, SEXP x0SEXP, SEXP y0SEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -145,7 +187,7 @@ END_RCPP
 }
 // on
 LogicalVector on(double x1, double y1, double x2, double y2, NumericVector x0, NumericVector y0, double eps);
-RcppExport SEXP interp_on(SEXP x1SEXP, SEXP y1SEXP, SEXP x2SEXP, SEXP y2SEXP, SEXP x0SEXP, SEXP y0SEXP, SEXP epsSEXP) {
+RcppExport SEXP _interp_on(SEXP x1SEXP, SEXP y1SEXP, SEXP x2SEXP, SEXP y2SEXP, SEXP x0SEXP, SEXP y0SEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -162,7 +204,7 @@ END_RCPP
 }
 // inHull
 LogicalVector inHull(List triObj, NumericVector x, NumericVector y, double eps);
-RcppExport SEXP interp_inHull(SEXP triObjSEXP, SEXP xSEXP, SEXP ySEXP, SEXP epsSEXP) {
+RcppExport SEXP _interp_inHull(SEXP triObjSEXP, SEXP xSEXP, SEXP ySEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -176,7 +218,7 @@ END_RCPP
 }
 // onHull
 LogicalVector onHull(List triObj, NumericVector x, NumericVector y, double eps);
-RcppExport SEXP interp_onHull(SEXP triObjSEXP, SEXP xSEXP, SEXP ySEXP, SEXP epsSEXP) {
+RcppExport SEXP _interp_onHull(SEXP triObjSEXP, SEXP xSEXP, SEXP ySEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;

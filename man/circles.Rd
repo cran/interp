@@ -1,6 +1,6 @@
 \name{circles}
 \alias{circles}
-\title{Add circles to a plot}
+\title{ plot circles }
 \description{
  This function plots circles at given locations with given radii.
 }
@@ -15,17 +15,10 @@ circles(x, y, r, ...)
 }
 \note{
   This function needs a previous plot where it adds the circles.
-
-  This function was earlier used in package \code{tripack}.
-}
-\author{
-  Albrecht Gebhardt <albrecht.gebhardt@aau.at>,
-  Roger Bivand <roger.bivand@nhh.no>
-}
-\seealso{
-  \code{\link{lines}},
-  \code{\link{points}}
-}
+  }
+\author{A. Gebhardt}
+\seealso{  \code{\link{lines}},
+  \code{\link{points}} }
 \examples{
 x<-rnorm(10)
 y<-rnorm(10)

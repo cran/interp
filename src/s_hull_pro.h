@@ -34,7 +34,7 @@ struct Triad
 {
   int a,b, c;
   int ab, bc, ac;  // adjacent edges index to neighbouring triangle.
-  float ro, R,C;
+  float ro=0.0, R=0.0,C=0.0;
   //std::set<int> idx;
   Triad() {};
   Triad(int x, int y) : a(x), b(y),c(0), ab(-1), bc(-1), ac(-1), ro(-1), R(0), C(0) {};
@@ -70,9 +70,9 @@ struct Triad
 
 struct Shx
 {
-  int id, trid;
+  int id, trid=0;
   float r,c, tr,tc;
-  float ro;
+  float ro=0.0;
   Shx() {};
   Shx(float a, float b) : id(-1), r(a), c(b), tr(0.0), tc(0.0), ro(0.0) {};
   Shx(float a, float b, float x) : id(-1), r(a), c(b), tr(0), tc(0), ro(x) {};

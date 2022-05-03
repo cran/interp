@@ -18,6 +18,8 @@ List partDerivGrid(NumericVector x, NumericVector y,
 
   List ret;
   int nD = xD.size();
+  if(nD!=yD.size() || nD!=zD.size())
+    Rf_error("sizes of xD, yD and/or zD differ!");
   int nG = x.size();
   int mG = y.size();
   
@@ -140,7 +142,11 @@ List partDerivPoints(NumericVector x, NumericVector y,
   
   List ret;
   int nD = xD.size();
+  if(nD!=yD.size() || nD!=zD.size())
+    Rf_error("sizes of xD, yD and/or zD differ!");
   int nP = x.size();
+  if(nP!=y.size())
+    Rf_error("sizes of x and y differ!");
 
 
   
@@ -246,9 +252,9 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
   int nD=xD.size();
   double xRange=max(xD)-min(xD);
   double yRange=max(yD)-min(yD);
-  if((h.size()!=2) & (h.size()!=1))
+  if((h.size()!=2) && (h.size()!=1))
     Rf_error("bandwidth parameter h is not a vector of 2 or 1 elements!");
-  double bwX, bwY;
+  double bwX=1.0, bwY=1.0;
   // global bandwidth:
   if(h.size()==2){
     bwX=h[0]*xRange;
@@ -320,10 +326,20 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
 
   // local bandwidth:
   if(h.size()==1){
-    if(h[0]>1)
-      Rf_error("local bandwidth parameter >1 !");
+    int inn=0;
+    if(h[0]>1){
+      Rf_warning("local bandwidth parameter >1 ! Used as number of nn.");
+      /* TODO:
+       * use this to set the number of nearest neighbours to int(h[0])!!!
+       */
+    }
+    inn=int(h[0]);
+    
     int nnX=h[0]*nD+1; // +1: the actual point has a duplicate!
     // the 2nd order local polynomial needs at least 6 data locations:
+    if(inn>1){
+      nnX=min(IntegerVector(nD,inn));
+    }
     if(nnX<=p){
       // Rf_warning("local bandwidth parameter to small, increasing");
       nnX=min(IntegerVector(nD,p));
@@ -369,7 +385,7 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
   // Rcout << yd << std::endl;
 
 
-  const int n(Xm.rows());//, p(Xm.cols());
+  // const int n(Xm.rows());//, p(Xm.cols());
 
   PDEst pde;
   pde.betahat=VectorXd(p);
@@ -387,11 +403,11 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
     // https://cran.r-project.org/web/packages/RcppEigen/vignettes/RcppEigen-Introduction.pdf:
     const LLT<MatrixXd> llt(AtA(Xm));
     pde.betahat=llt.solve(Xm.adjoint() * yd);
-    const VectorXd fitted(Xm * pde.betahat);
-    const VectorXd resid(yd - fitted);
-    const int df(n - p);
-    const double s(resid.norm() / std::sqrt(double(df)));
     // FIXME
+    // const VectorXd fitted(Xm * pde.betahat);
+    // const VectorXd resid(yd - fitted);
+    // const int df(n - p);
+    // const double s(resid.norm() / std::sqrt(double(df)));
     //pde.se=W.inverse()*(s * llt.matrixL().solve(MatrixXd::Identity(p, p))
     //                    .colwise().norm());
   } else
@@ -411,28 +427,28 @@ PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
         // this is the SVD based solver, section 4.4:
         const Eigen::JacobiSVD<MatrixXd> UDV(Xm.jacobiSvd(Eigen::ComputeThinU|Eigen::ComputeThinV));
         const ArrayXd Dp(Dplus(UDV.singularValues()));
-        const int r((Dp > 0).count());
+        // const int r((Dp > 0).count());
         const MatrixXd VDp(UDV.matrixV() * Dp.matrix().asDiagonal());
         pde.betahat=VDp * UDV.matrixU().adjoint() * yd;
-        const VectorXd fitted(Xm * pde.betahat);
-        const VectorXd resid(yd - fitted);
-        const int df(nD - p);
-        const double s(resid.norm() / std::sqrt(double(df)));
 	// FIXME
+        // const VectorXd fitted(Xm * pde.betahat);
+        // const VectorXd resid(yd - fitted);
+        // const int df(nD - p);
+        // const double s(resid.norm() / std::sqrt(double(df)));
         // pde.se=W.inverse()*(s * VDp.rowwise().norm());
       } else
         if(solver=="Eigen"){
           // this is the eigen decomposition based solver, section 4.5:
           const Eigen::SelfAdjointEigenSolver<MatrixXd> VLV(AtA(Xm));
           const ArrayXd Dp(Dplus(VLV.eigenvalues()).sqrt());
-          const int r((Dp > 0).count());
+          // const int r((Dp > 0).count());
           const MatrixXd VDp(VLV.eigenvectors() * Dp.matrix().asDiagonal());
           pde.betahat=VDp * VDp.adjoint() * Xm.adjoint() * yd;
-          const VectorXd fitted(Xm * pde.betahat);
-          const VectorXd resid(yd - fitted);
-          const int df(nD - p);
-          const double s(resid.norm() / std::sqrt(double(df)));
 	  // FIXME
+          // const VectorXd fitted(Xm * pde.betahat);
+          // const VectorXd resid(yd - fitted);
+          // const int df(nD - p);
+          // const double s(resid.norm() / std::sqrt(double(df)));
           //pde.se=W.inverse()*(s * VDp.rowwise().norm());
         } else
           if(solver=="CPivQR"){
@@ -830,7 +846,7 @@ PDEst pDsmooth(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
         Zyy.array()*Zyy.array();
     }
     double wsp=pweight.sum();
-    double wsv=vweight.sum();
+    //double wsv=vweight.sum();
     pweight = pweight.array()/wsp;
     // vweight = vweight.array()/wsv;
     // TODO: if vweight != 0
@@ -954,7 +970,7 @@ NN extendNN(NN nn, NumericVector X, NumericVector Y,
   if(Y.size()!=N)
     Rf_error("sizes of X and Y dont match!");
   //Rcout << nn.ind.rows() << ", " << nn.ind.cols() << ", " << N << std::endl;
-  if((nn.ind.rows()!=N) | (nn.ind.cols()!=N))
+  if((nn.ind.rows()!=N) || (nn.ind.cols()!=N))
     Rf_error("sizes of nn and X and Y dont match!");
 
   ret.ind=MatrixXi(n+N,n+N).setZero();
@@ -970,7 +986,7 @@ NN extendNN(NN nn, NumericVector X, NumericVector Y,
 
   for(int i=0; i<n+N; i++){
     for(int j=0; j<n+N; j++){
-      if(((i<N) & (j>=N)) | (i>+N)){
+      if(((i<N) && (j>=N)) || (i>+N)){
         double dij=sqrt((xtmp[i]-xtmp[j])*(xtmp[i]-xtmp[j])+(ytmp[i]-ytmp[j])*(ytmp[i]-ytmp[j]));
         //Rcout << "dist: " << dij << std::endl;
         // simply record first  neighbour

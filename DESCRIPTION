@@ -1,15 +1,15 @@
 Package: interp
 Type: Package
 Title: Interpolation Methods
-Version: 1.0-33
-Date: 2020-01-07
+Version: 1.1-1
+Date: 2022-05-02
 Authors@R: c(person("Albrecht", "Gebhardt", role = c("aut", "cre", "cph"),
-                     email = "albrecht.gebhardt@aau.at",
-                     comment = "..."),
+                     email = "albrecht.gebhardt@aau.at"),
             person("Roger", "Bivand", role = c("aut"),
                      email = "Roger.Bivand@nhh.no"),
             person("David", "Sinclair", role = c("aut","cph"),
-                     email = "david@s-hull.org"))
+                     email = "david@s-hull.org",
+                     comment = "author of the shull library"))
 Maintainer: Albrecht Gebhardt <albrecht.gebhardt@aau.at>
 Description: Bivariate data interpolation on regular and irregular
   grids, either linear or using splines are the main part of this
@@ -35,10 +35,11 @@ License: GPL (>= 2)
 Imports: Rcpp (>= 0.12.9), deldir
 Suggests: sp, Deriv
 LinkingTo: Rcpp, RcppEigen
+Depends: R (>= 3.5.0)
 NeedsCompilation: yes
-Packaged: 2020-01-07 21:35:45 UTC; agebhard
-Author: Albrecht Gebhardt [aut, cre, cph] (...),
+Packaged: 2022-05-02 19:24:30 UTC; alge
+Author: Albrecht Gebhardt [aut, cre, cph],
   Roger Bivand [aut],
-  David Sinclair [aut, cph]
+  David Sinclair [aut, cph] (author of the shull library)
 Repository: CRAN
-Date/Publication: 2020-01-08 23:01:13 UTC
+Date/Publication: 2022-05-03 07:20:05 UTC

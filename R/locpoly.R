@@ -17,12 +17,12 @@ locpoly <- function(x, y, z,
     }
 
     if(input=="grid"){
-        nx <- length(x)
-        ny <- length(y)
-        if(dim(z)[1]!=nx | dim(z)[2]!=ny)
+        lnx <- length(x)
+        lny <- length(y)
+        if(dim(z)[1]!=lnx | dim(z)[2]!=lny)
             stop("wrong dimensions of x, y, and z!")
-        x <- matrix(rep(x,ny),nx,ny)
-        y <- t(matrix(rep(y,nx),ny,nx))
+        x <- matrix(rep(x,lny),lnx,lny)
+        y <- t(matrix(rep(y,lnx),lny,lnx))
     }
     
     if(pd=="all"){

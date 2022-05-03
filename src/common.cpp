@@ -37,12 +37,12 @@ double kern2d(double x, double xi, double hx,
   if(kernel=="gaussian")
     k=1.0/(2.0*M_PI)*exp(-0.5*(t1*t1+t2*t2));
   else if(kernel=="epanechnikov"){
-    if((abs(t1)<=1.0) & (abs(t2)<=1.0))
+    if((abs(t1)<=1.0) && (abs(t2)<=1.0))
       k=81.0/256.0*(1-t1*t1)*(1-t1*t1)*(1-t2*t2)*(1-t2*t2);
     else
       k=0.0;
   } else if(kernel=="uniform"){
-    if((abs(t1)<=1.0) & (abs(t2)<=1.0))
+    if((abs(t1)<=1.0) && (abs(t2)<=1.0))
       k=0.25;
     else
       k=0.0;

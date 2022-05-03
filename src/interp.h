@@ -88,7 +88,7 @@ typedef struct pdest{
   double cond;
 } PDEst;
 
-
+#define sgn(x) (x > 0) ? 1 : ((x < 0) ? -1 : 0)    
 
 
 #define EIGEN_INITIALIZE_MATRICES_BY_NAN 1

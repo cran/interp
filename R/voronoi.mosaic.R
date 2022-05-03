@@ -50,7 +50,7 @@
         list(x=x0+d*vx,y=y0+d*vy)
       }
 
-    if(class(x)=="tri"){
+    if(inherits(x,"tri")){
         if(!is.null(x$tlist))
             stop("this \"tri\" object has been created with tripack::tri.mesh,\n  recreate it with interp::tri.mesh!\n  The $call element gives a hint how it was created.")
         tri.obj <- x
