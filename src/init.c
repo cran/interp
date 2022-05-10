@@ -26,7 +26,7 @@ extern SEXP _interp_aSpline(SEXP, SEXP, SEXP, SEXP,SEXP);
 extern SEXP _interp_inHull(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_interpDeltri(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_interpShull(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP,
-                                SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+                                SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_left(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_nearestNeighbours(SEXP, SEXP);
 extern SEXP _interp_on(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);

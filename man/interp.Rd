@@ -14,9 +14,9 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
        duplicate = "error", dupfun = NULL,
        nx = 40, ny = 40, input="points", output = "grid",
        method = "linear", deltri = "shull", h=0,
-       kernel="uniform", solver="QR", degree=3,
+       kernel="gaussian", solver="QR", degree=3,
        baryweight=TRUE, autodegree=FALSE, adtol=0.1,
-       smoothpde=TRUE, akimaweight=TRUE, nweight=25)
+       smoothpde=FALSE, akimaweight=TRUE, nweight=25)
 }
 \arguments{
   \item{x}{
@@ -142,22 +142,28 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     interpolation! Possible values are \code{"shull"} (default, sweep 
     hull algorithm) and \code{"deldir"} (uses package\code{deldir}).
   }
-  \item{h}{bandwidth for partial derivatives estimation}
+  \item{h}{bandwidth for partial derivatives estimation, compare \code{\link{locpoly}} for details}
 
-  \item{kernel}{kernel for partial derivatives estimation}
+  \item{kernel}{kernel for partial derivatives estimation, compare \code{\link{locpoly}} for details}
 
-  \item{solver}{solver used in partial derivatives estimation}
+  \item{solver}{solver used in partial derivatives estimation, compare \code{\link{locpoly}} for details}
   \item{degree}{degree of local polynomial used for partial derivatives
-    estimation}
+    estimation, compare \code{\link{locpoly}} for details}
   \item{baryweight}{calculate three partial derivatives estimatiors and
     weight them}
   \item{autodegree}{try to reduce degree automatically}
   \item{adtol}{used for autodegree}
-  \item{smoothpde}{FIXME}
+  \item{smoothpde}{Use a an averaged version of partial derivatives
+    estimates, by default simple average of \code{nweight} estimates.
+
+    Currently disabled by default (FALSE), underlying code still a bit 
+    experimental.
+  }
 
   \item{akimaweight}{apply Akima weighting scheme on partial derivatives
-    estimations}
-  \item{nweight}{size of search neighbourhood for weighting scheme}
+    estimations instead of simply averaging}
+  \item{nweight}{size of search neighbourhood for weighting scheme,
+    default: 25}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -226,14 +232,74 @@ still under development.
 \examples{
 ### Use all datasets from Franke, 1979:
 data(franke)
-for(i in 1:5)
-    for(j in 1:3){
-        FR <- franke.data(i,j,franke)
-        IL <- with(FR, interp(x,y,z,method="linear"))
-        image(IL)
-        contour(IL,add=TRUE)
-        with(FR,points(x,y))
-    }
+## x-y irregular grid points:
+oldseed <- set.seed(42)
+ni <- 64
+xi <- runif(ni,0,1)
+yi <- runif(ni,0,1)
+xyi <- cbind(xi,yi)
+## linear interpolation
+fi <- franke.fn(xi,yi,1)
+IL <- interp(xi,yi,fi,nx=80,ny=80,method="linear")
+## prepare breaks and colors that match for image and contour:
+breaks <- pretty(seq(min(IL$z,na.rm=TRUE),max(IL$z,na.rm=TRUE),length=11))
+db <- breaks[2]-breaks[1]
+nb <- length(breaks)
+breaks <- c(breaks[1]-db,breaks,breaks[nb]+db)
+colors <- terrain.colors(length(breaks)-1)
+image(IL,breaks=breaks,col=colors,main="Franke function 1",
+      sub=paste("linear interpolation, ", ni,"points"))
+contour(IL,add=TRUE,levels=breaks)
+points(xi,yi)
+## spline interpolation
+fi <- franke.fn(xi,yi,1)
+IS <- interp(xi,yi,fi,method="akima",
+             kernel="gaussian",solver="QR")
+## prepare breaks and colors that match for image and contour:
+breaks <- pretty(seq(min(IS$z,na.rm=TRUE),max(IS$z,na.rm=TRUE),length=11))
+db <- breaks[2]-breaks[1]
+nb <- length(breaks)
+breaks <- c(breaks[1]-db,breaks,breaks[nb]+db)
+colors <- terrain.colors(length(breaks)-1)
+image(IS,breaks=breaks,col=colors,main="Franke function 1",
+      sub=paste("spline interpolation, ", ni,"points"))
+contour(IS,add=TRUE,levels=breaks)
+        points(xi,yi)
+## regular grid:
+nx <- 8; ny <- 8
+xg<-seq(0,1,length=nx)
+yg<-seq(0,1,length=ny)
+xx <- t(matrix(rep(xg,ny),nx,ny))
+yy <- matrix(rep(yg,nx),ny,nx)
+xyg<-expand.grid(xg,yg)
+## linear interpolation
+fg <- outer(xg,yg,function(x,y)franke.fn(x,y,1))
+IL <- interp(xg,yg,fg,input="grid",method="linear")
+## prepare breaks and colors that match for image and contour:
+breaks <- pretty(seq(min(IL$z,na.rm=TRUE),max(IL$z,na.rm=TRUE),length=11))
+db <- breaks[2]-breaks[1]
+nb <- length(breaks)
+breaks <- c(breaks[1]-db,breaks,breaks[nb]+db)
+colors <- terrain.colors(length(breaks)-1)
+image(IL,breaks=breaks,col=colors,main="Franke function 1",
+      sub=paste("linear interpolation, ", nx,"x",ny,"points"))
+contour(IL,add=TRUE,levels=breaks)
+points(xx,yy)
+## spline interpolation
+fg <- outer(xg,yg,function(x,y)franke.fn(x,y,1))
+IS <- interp(xg,yg,fg,input="grid",method="akima",
+             kernel="gaussian",solver="QR")
+## prepare breaks and colors that match for image and contour:
+breaks <- pretty(seq(min(IS$z,na.rm=TRUE),max(IS$z,na.rm=TRUE),length=11))
+db <- breaks[2]-breaks[1]
+nb <- length(breaks)
+breaks <- c(breaks[1]-db,breaks,breaks[nb]+db)
+colors <- terrain.colors(length(breaks)-1)
+image(IS,breaks=breaks,col=colors,main="Franke function 1",
+      sub=paste("spline interpolation, ", nx,"x",ny,"points"))
+contour(IS,add=TRUE,levels=breaks)
+        points(xx,yy)
+set.seed(oldseed)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

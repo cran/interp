@@ -13,11 +13,11 @@ interp <- function(x, y=NULL, z,
                    duplicate = "error", dupfun = NULL,
                    nx = 40, ny = 40, input = "points", output = "grid",
                    method="linear", deltri="shull",
-                   h=0, kernel="uniform", solver="QR", degree=3,
+                   h=0, kernel="gaussian", solver="QR", degree=3,
                    baryweight=TRUE,
                    autodegree=FALSE,
                    adtol=0.1,
-                   smoothpde=TRUE,
+                   smoothpde=FALSE,
                    akimaweight=TRUE,
                    nweight=25)
     {

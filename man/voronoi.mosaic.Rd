@@ -62,8 +62,8 @@ G. Voronoi, Nouvelles applications des parametres continus a la theorie
   Roger Bivand <roger.bivand@nhh.no>
 }
 \note{
-  This function is meant as a replacement for
-  \code{\link[tripack]{voronoi.mosaic}} from package \code{tripack}.
+  This function is meant as a replacement for function
+  \code{voronoi.mosaic} from package \code{tripack}.
   Please note that the underlying triangulation uses a
   different algorithm, see \code{\link{tri.mesh}}. Contrary to
   \code{tri.mesh} this should not affect the result for non

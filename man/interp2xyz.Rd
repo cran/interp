@@ -28,9 +28,7 @@ interp2xyz(al, data.frame = FALSE)
 }
 \examples{
 data(akima)
-ak.spl <- with(akima, interp(x, y, z, method = "akima",
-                                xo= seq(0,25, length=100),
-                                yo= seq(0,20, length= 96)))
+ak.spl <- with(akima, interp(x, y, z, method = "akima"))
 str(ak.spl)# list (x[i], y[j], z = <matrix>[i,j])
 
 ## Now transform to simple  (x,y,z)  matrix / data.frame :

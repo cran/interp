@@ -98,8 +98,8 @@ tri.mesh(x, y = NULL, duplicate = "error")
   Roger Bivand <roger.bivand@nhh.no>
 }
 \note{
-  This function is meant as a replacement for
-  \code{\link[tripack]{tri.mesh}} from package \code{tripack}.
+  This function is meant as a replacement for function
+  \code{tri.mesh} from package \code{tripack}.
   Please note that the underlying algorithm changed from Renka's method
   to Sinclair's sweep hull method. Delaunay triangulations are unique if
   no four or more points exist which share the same
@@ -110,7 +110,7 @@ tri.mesh(x, y = NULL, duplicate = "error")
 
   The arguments are backward compatible, but the returned object
   is not compatible with package \code{tripack} (it
-  provides a \code{\link[tripack]{tri}} object type)! But you
+  provides a \code{tri} object type)! But you
   can apply methods with same names to the object returned in package
   \code{interp} which is of type \code{\link{triSht}}, so you can reuse
   your old code but you cannot reuse your old saved workspace.

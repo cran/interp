@@ -13,7 +13,7 @@ interpDeltri <- function(x, y, zD, t, input = "points", output = "grid") {
     .Call('_interp_interpDeltri', PACKAGE = 'interp', x, y, zD, t, input, output)
 }
 
-interpShull <- function(x, y, xD, yD, zD, linear = TRUE, input = "points", output = "grid", kernel = "gaussian", h = as.numeric( c(0.0)), solver = "QR", degree = 3L, baryweight = TRUE, autodegree = FALSE, adtol = 1E-6, smoothpde = TRUE, akimaweight = TRUE, nweight = 25L) {
+interpShull <- function(x, y, xD, yD, zD, linear = TRUE, input = "points", output = "grid", kernel = "gaussian", h = as.numeric( c(0.0)), solver = "QR", degree = 3L, baryweight = TRUE, autodegree = FALSE, adtol = 1E-6, smoothpde = FALSE, akimaweight = TRUE, nweight = 25L) {
     .Call('_interp_interpShull', PACKAGE = 'interp', x, y, xD, yD, zD, linear, input, output, kernel, h, solver, degree, baryweight, autodegree, adtol, smoothpde, akimaweight, nweight)
 }
 

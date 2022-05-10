@@ -145,7 +145,7 @@ List interpShull(NumericVector x, NumericVector y,
                  bool baryweight = true,
                  bool autodegree = false,
                  double adtol = 1E-6,
-                 bool smoothpde = true,
+                 bool smoothpde = false,
                  bool akimaweight = true,
                  int nweight = 25) {
 
