@@ -91,8 +91,9 @@ locpoly(x, y, z, xo = seq(min(x), max(x), length = nx), yo = seq(min(y),
     bandwidth. 
   }
   \item{kernel}{
-    Text value, implemented kernels are \code{uniform} (default),
-    \code{epanechnikov} and \code{gaussian}.
+    Text value, implemented kernels are \code{uniform}, \code{triangle},
+    \code{epanechnikov}, \code{biweight}, \code{tricube},
+    \code{triweight}, \code{cosine}  and \code{gaussian} (default).
 }
 \item{solver}{
   Text value, determines used solver in fastLM algorithm used by this 

@@ -38,12 +38,38 @@ double kern2d(double x, double xi, double hx,
     k=1.0/(2.0*M_PI)*exp(-0.5*(t1*t1+t2*t2));
   else if(kernel=="epanechnikov"){
     if((abs(t1)<=1.0) && (abs(t2)<=1.0))
-      k=81.0/256.0*(1-t1*t1)*(1-t1*t1)*(1-t2*t2)*(1-t2*t2);
+      k=3.0*3.0/4.0/4.0*(1-t1*t1)*(1-t2*t2);
+    else
+      k=0.0;
+  } else if(kernel=="biweight"){
+    if((abs(t1)<=1.0) && (abs(t2)<=1.0))
+      k=15.0*15.0/16.0/16.0*(1-t1*t1)*(1-t1*t1)*(1-t2*t2)*(1-t2*t2);
+    else
+      k=0.0;
+  } else if(kernel=="tricube"){
+    if((abs(t1)<=1.0) && (abs(t2)<=1.0)){
+      double t1a=abs(t1), t2a=abs(t2);
+      k=70.0*70.0/81.0/81.0*(1-t1a*t1a*t1a)*(1-t1a*t1a*t1a)*(1-t1a*t1a*t1a)*(1-t2a*t2a*t2a)*(1-t2a*t2a*t2a)*(1-t2a*t2a*t2a);
+    } else
+      k=0.0;
+  } else if(kernel=="triweight"){
+    if((abs(t1)<=1.0) && (abs(t2)<=1.0))
+      k=35.0*35.0/32.0/32.0*(1-t1*t1)*(1-t1*t1)*(1-t1*t1)*(1-t2*t2)*(1-t2*t2)*(1-t2*t2);
+    else
+      k=0.0;
+  } else if(kernel=="cosine"){
+    if((abs(t1)<=M_PI/2.0) && (abs(t2)<=M_PI/2.0))
+      k=0.25*cos(t1)*cos(t2);
     else
       k=0.0;
   } else if(kernel=="uniform"){
     if((abs(t1)<=1.0) && (abs(t2)<=1.0))
       k=0.25;
+    else
+      k=0.0;
+  } else if(kernel=="triangle"){
+    if((abs(t1)<=1.0) && (abs(t2)<=1.0))
+      k=(1.0-abs(t1))*(1.0-abs(t2));
     else
       k=0.0;
   } else

@@ -56,13 +56,20 @@
 
   The only difference is that no constraints to the triangulation are
   possible in package \code{interp}.
+
+  Function \code{triSht2tri} provides an option to convert this object into
+  the older form from package \code{tripack}, but it will not generate exact
+  copies as if the object would have been created with \code{tripack::tri.mesh}!
+  The old data structure consists of three lists describing adjacency lists
+  of triangulation nodes in counterclockwise order, the translation function 
+  only genrates such a valid (but not unique) description. 
 }
 \author{
   Albrecht Gebhardt <albrecht.gebhardt@aau.at>,
   Roger Bivand <roger.bivand@nhh.no>
 }
 \seealso{
-  \code{\link{tri.mesh}}, \code{\link{print.triSht}},
+  \code{\link{tri.mesh}}, \code{\link{print.triSht}},\code{\link{triSht2tri}}, 
   \code{\link{plot.triSht}}, \code{\link{summary.triSht}}
 }
 \keyword{spatial}

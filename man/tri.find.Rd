@@ -19,7 +19,8 @@ tri.find(tri.obj,x,y)
 \value{
   A list with elements \code{i1},\code{i2},\code{i3} containing nodal
   indexes, in counterclockwise order, of the vertices of a triangle
-  containing \eqn{P=(x,y)}. \code{bc} contains the barycentric coordinates 
+  containing \eqn{P=(x,y)}. \code{tr} contains the triangle index and 
+  \code{bc} contains the barycentric coordinates 
   of \eqn{P} w.r.t. the found triangle.
 
   If \eqn{P} is not contained in the
