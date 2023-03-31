@@ -142,7 +142,7 @@ inline bool operator<(const Dupex &a, const Dupex &b)
 // from s_hull.C
 
 
-int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads);
+int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size);
 void circle_cent2(float r1,float c1, float r2,float c2, float r3,float c3,float &r,float &c, float &ro2);
 void circle_cent4(float r1,float c1, float r2,float c2, float r3,float c3,float &r,float &c, float &ro2);
 void write_Shx(std::vector<Shx> &pts, char * fname);

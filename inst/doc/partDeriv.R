@@ -18,32 +18,32 @@ library(lattice)
 
 
 ###################################################
-### code chunk number 2: partDeriv.Rnw:391-392
+### code chunk number 2: partDeriv.Rnw:415-416
 ###################################################
 ng <- 11
 
 
 ###################################################
-### code chunk number 3: partDeriv.Rnw:397-398
+### code chunk number 3: partDeriv.Rnw:421-422
 ###################################################
 knl <- "gaussian"
 
 
 ###################################################
-### code chunk number 4: partDeriv.Rnw:405-407
+### code chunk number 4: partDeriv.Rnw:429-431
 ###################################################
 bwg <- 0.33  
 bwl <- 0.11  
 
 
 ###################################################
-### code chunk number 5: partDeriv.Rnw:420-421
+### code chunk number 5: partDeriv.Rnw:444-445
 ###################################################
 dg=3
 
 
 ###################################################
-### code chunk number 6: partDeriv.Rnw:424-425
+### code chunk number 6: partDeriv.Rnw:448-449
 ###################################################
 f <- function(x,y) (x-0.5)*(x-0.2)*(y-0.6)*y*(x-1)
 
@@ -186,13 +186,13 @@ derivs <- function(f,dg){
 
 
 ###################################################
-### code chunk number 10: partDeriv.Rnw:559-560
+### code chunk number 10: partDeriv.Rnw:583-584
 ###################################################
 df <- derivs(f,dg)
 
 
 ###################################################
-### code chunk number 11: partDeriv.Rnw:563-566
+### code chunk number 11: partDeriv.Rnw:587-590
 ###################################################
 xg <- seq(0,1,length=ng)
 yg <- seq(0,1,length=ng)
@@ -200,13 +200,13 @@ xyg <- expand.grid(xg,yg)
 
 
 ###################################################
-### code chunk number 12: partDeriv.Rnw:568-569
+### code chunk number 12: partDeriv.Rnw:592-593
 ###################################################
 af=4
 
 
 ###################################################
-### code chunk number 13: partDeriv.Rnw:573-577
+### code chunk number 13: partDeriv.Rnw:597-601
 ###################################################
 af <- 4
 xfg <- seq(0,1,length=af*ng)
@@ -215,7 +215,7 @@ xyfg <- expand.grid(xfg,yfg)
 
 
 ###################################################
-### code chunk number 14: partDeriv.Rnw:580-584
+### code chunk number 14: partDeriv.Rnw:604-608
 ###################################################
 nx <- length(xg)
 ny <- length(yg)
@@ -250,7 +250,7 @@ fgrid <- function(f,xg,yg,dg){
 
 
 ###################################################
-### code chunk number 16: partDeriv.Rnw:612-616
+### code chunk number 16: partDeriv.Rnw:636-640
 ###################################################
 ## data for local regression
 fg   <- outer(xg,yg,f)
@@ -259,7 +259,7 @@ ffg <- fgrid(f,xfg,yfg,dg)
 
 
 ###################################################
-### code chunk number 17: partDeriv.Rnw:620-624
+### code chunk number 17: partDeriv.Rnw:644-648
 ###################################################
 ## global bandwidth:
 pdg <- interp::locpoly(xg,yg,fg, input="grid", pd="all", h=c(bwg,bwg), solver="QR", degree=dg,kernel=knl,nx=af*ng,ny=af*ng)
@@ -373,7 +373,7 @@ t3 <- grid.text(paste(c(paste("kernel:",knl),
 
 
 ###################################################
-### code chunk number 22: partDeriv.Rnw:722-735
+### code chunk number 22: partDeriv.Rnw:746-759
 ###################################################
 pf <- gg1image2contours(xfg,yfg,ffg$f,pdg$z,pdl$z,xyg,"f")
 pfx <- gg1image2contours(xfg,yfg,ffg$fx,pdg$zx,pdl$zx,xyg,"f_x")
@@ -401,7 +401,7 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 24: partDeriv.Rnw:758-759
+### code chunk number 24: partDeriv.Rnw:782-783
 ###################################################
 getOption("SweaveHooks")[["fig"]]()
 lay<-rbind(c( 1, 2, 3, 3),
@@ -412,7 +412,7 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 25: partDeriv.Rnw:767-771
+### code chunk number 25: partDeriv.Rnw:791-795
 ###################################################
 f <- function(x,y) 0.75*exp(-((9*x-2)^2+(9*y-2)^2)/4)+0.75*exp(-((9*x+1)^2)/49-(9*y+1)/10)+0.5*exp(-((9*x-7)^2+(9*y-3)^2)/4)-0.2*exp(-(9*x-4)^2-(9*y-7)^2)
 fg  <- outer(xg,yg,f)
@@ -421,7 +421,7 @@ df  <- derivs(f,dg)
 
 
 ###################################################
-### code chunk number 26: partDeriv.Rnw:774-778
+### code chunk number 26: partDeriv.Rnw:798-802
 ###################################################
 ## global bw,
 pdg <- interp::locpoly(xg,yg,fg, input="grid", pd="all", h=c(bwg,bwg), solver="QR", degree=dg,kernel=knl,nx=af*ng,ny=af*ng)
@@ -449,7 +449,7 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 28: partDeriv.Rnw:801-802
+### code chunk number 28: partDeriv.Rnw:825-826
 ###################################################
 getOption("SweaveHooks")[["fig"]]()
 pf <- gg1image2contours(xfg,yfg,ffg$f,pdg$z,pdl$z,xyg,"f")
@@ -469,19 +469,19 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 29: partDeriv.Rnw:814-815
+### code chunk number 29: partDeriv.Rnw:838-839
 ###################################################
 n <- ng*ng
 
 
 ###################################################
-### code chunk number 30: partDeriv.Rnw:818-819
+### code chunk number 30: partDeriv.Rnw:842-843
 ###################################################
 f <- function(x,y) (x-0.5)*(x-0.2)*(y-0.6)*y*(x-1)
 
 
 ###################################################
-### code chunk number 31: partDeriv.Rnw:822-827
+### code chunk number 31: partDeriv.Rnw:846-851
 ###################################################
 ## random irregular data
 x<-runif(n)
@@ -491,14 +491,14 @@ z <- f(x,y)
 
 
 ###################################################
-### code chunk number 32: partDeriv.Rnw:830-832
+### code chunk number 32: partDeriv.Rnw:854-856
 ###################################################
 ffg <- fgrid(f,xfg,yfg,dg)
 df <- derivs(f,dg)
 
 
 ###################################################
-### code chunk number 33: partDeriv.Rnw:835-839
+### code chunk number 33: partDeriv.Rnw:859-863
 ###################################################
 ## global bandwidth
 pdg <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=c(bwg,bwg), solver="QR", degree=dg,kernel=knl)
@@ -507,7 +507,7 @@ pdl <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=bwl, solver="QR", degree=dg,k
 
 
 ###################################################
-### code chunk number 34: partDeriv.Rnw:844-865
+### code chunk number 34: partDeriv.Rnw:868-889
 ###################################################
 pf <- gg1image2contours(xfg,yfg,ffg$f,pdg$z,pdl$z,xy,"f")
 pfx <- gg1image2contours(xfg,yfg,ffg$fx,pdg$zx,pdl$zx,xy,"f_x")
@@ -539,20 +539,20 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 36: partDeriv.Rnw:872-873
+### code chunk number 36: partDeriv.Rnw:896-897
 ###################################################
 getOption("SweaveHooks")[["fig"]]()
 gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(pfy),ggplotGrob(pfxx),ggplotGrob(pfxy),ggplotGrob(pfyy),t3,ggplotGrob(pfxxx),ggplotGrob(pfxxy),ggplotGrob(pfxyy),ggplotGrob(pfyyy)),layout_matrix = lay)
 
 
 ###################################################
-### code chunk number 37: partDeriv.Rnw:879-880
+### code chunk number 37: partDeriv.Rnw:903-904
 ###################################################
 f <- function(x,y) 0.75*exp(-((9*x-2)^2+(9*y-2)^2)/4)+0.75*exp(-((9*x+1)^2)/49-(9*y+1)/10)+0.5*exp(-((9*x-7)^2+(9*y-3)^2)/4)-0.2*exp(-(9*x-4)^2-(9*y-7)^2)
 
 
 ###################################################
-### code chunk number 38: partDeriv.Rnw:882-886
+### code chunk number 38: partDeriv.Rnw:906-910
 ###################################################
 z <- f(x,y)
 fg  <- outer(xg,yg,f)
@@ -561,7 +561,7 @@ df <- derivs(f,dg)
 
 
 ###################################################
-### code chunk number 39: partDeriv.Rnw:888-893
+### code chunk number 39: partDeriv.Rnw:912-917
 ###################################################
 ## global bandwidth:
 ttg <- system.time(pdg <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=c(bwg,bwg), solver="QR", degree=dg,kernel=knl))
@@ -571,7 +571,7 @@ ttl <- system.time(pdl <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=bwl, solve
 
 
 ###################################################
-### code chunk number 40: partDeriv.Rnw:895-907
+### code chunk number 40: partDeriv.Rnw:919-931
 ###################################################
 pf <- gg1image2contours(xfg,yfg,ffg$f,pdg$z,pdl$z,xy,"f")
 pfx <- gg1image2contours(xfg,yfg,ffg$fx,pdg$zx,pdl$zx,xy,"f_x")
@@ -594,14 +594,14 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 42: partDeriv.Rnw:914-915
+### code chunk number 42: partDeriv.Rnw:938-939
 ###################################################
 getOption("SweaveHooks")[["fig"]]()
 gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(pfy),ggplotGrob(pfxx),ggplotGrob(pfxy),ggplotGrob(pfyy),t3,ggplotGrob(pfxxx),ggplotGrob(pfxxy),ggplotGrob(pfxyy),ggplotGrob(pfyyy)),layout_matrix = lay)
 
 
 ###################################################
-### code chunk number 43: partDeriv.Rnw:926-930
+### code chunk number 43: partDeriv.Rnw:950-954
 ###################################################
 ## global bandwidth:
 pdg <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=c(bwg,bwg), solver="QR", degree=dg,kernel="uniform")
@@ -610,7 +610,7 @@ pdl <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=bwl, solver="QR", degree=dg,k
 
 
 ###################################################
-### code chunk number 44: partDeriv.Rnw:932-951
+### code chunk number 44: partDeriv.Rnw:956-975
 ###################################################
 pf <- gg1image2contours(xfg,yfg,ffg$f,pdg$z,pdl$z,xy,"f")
 pfx <- gg1image2contours(xfg,yfg,ffg$fx,pdg$zx,pdl$zx,xy,"f_x")
@@ -640,14 +640,14 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 46: partDeriv.Rnw:958-959
+### code chunk number 46: partDeriv.Rnw:982-983
 ###################################################
 getOption("SweaveHooks")[["fig"]]()
 gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(pfy),ggplotGrob(pfxx),ggplotGrob(pfxy),ggplotGrob(pfyy),t3,ggplotGrob(pfxxx),ggplotGrob(pfxxy),ggplotGrob(pfxyy),ggplotGrob(pfyyy)),layout_matrix = lay)
 
 
 ###################################################
-### code chunk number 47: partDeriv.Rnw:964-968
+### code chunk number 47: partDeriv.Rnw:988-992
 ###################################################
 ## global bandwidth:
 pdg <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=c(bwg,bwg), solver="QR", degree=dg,kernel="epanechnikov")
@@ -656,7 +656,7 @@ pdl <- interp::locpoly(x,y,z, xfg,yfg, pd="all", h=bwl, solver="QR", degree=dg,k
 
 
 ###################################################
-### code chunk number 48: partDeriv.Rnw:970-988
+### code chunk number 48: partDeriv.Rnw:994-1012
 ###################################################
 pf <- gg1image2contours(xfg,yfg,ffg$f,pdg$z,pdl$z,xy,"f")
 pfx <- gg1image2contours(xfg,yfg,ffg$fx,pdg$zx,pdl$zx,xy,"f_x")
@@ -685,14 +685,14 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 
 
 ###################################################
-### code chunk number 50: partDeriv.Rnw:995-996
+### code chunk number 50: partDeriv.Rnw:1019-1020
 ###################################################
 getOption("SweaveHooks")[["fig"]]()
 gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(pfy),ggplotGrob(pfxx),ggplotGrob(pfxy),ggplotGrob(pfyy),t3,ggplotGrob(pfxxx),ggplotGrob(pfxxy),ggplotGrob(pfxyy),ggplotGrob(pfyyy)),layout_matrix = lay)
 
 
 ###################################################
-### code chunk number 51: partDeriv.Rnw:1011-1013
+### code chunk number 51: partDeriv.Rnw:1035-1037
 ###################################################
 # helper functions for translation between R and Yacas
 fn_y  <- function(f){
@@ -715,7 +715,7 @@ ys_fn  <- function(f){
 
 
 ###################################################
-### code chunk number 52: partDeriv.Rnw:1020-1021
+### code chunk number 52: partDeriv.Rnw:1044-1045
 ###################################################
 derivs <- function(f,dg){
     ret<-list(f=f,
@@ -824,7 +824,7 @@ derivs <- function(f,dg){
 
 
 ###################################################
-### code chunk number 53: partDeriv.Rnw:1027-1028
+### code chunk number 53: partDeriv.Rnw:1051-1052
 ###################################################
 # for plots of exact values
 fgrid <- function(f,xg,yg,dg){
@@ -850,7 +850,7 @@ fgrid <- function(f,xg,yg,dg){
 
 
 ###################################################
-### code chunk number 54: partDeriv.Rnw:1032-1033
+### code chunk number 54: partDeriv.Rnw:1056-1057
 ###################################################
 split_str <- function(txt,l){
   start <- seq(1, nchar(txt), l)
@@ -860,7 +860,7 @@ split_str <- function(txt,l){
 
 
 ###################################################
-### code chunk number 55: partDeriv.Rnw:1037-1038
+### code chunk number 55: partDeriv.Rnw:1061-1062
 ###################################################
 grid2df <- function(x,y,z)
     subset(data.frame(x = rep(x, nrow(z)),
@@ -893,7 +893,7 @@ gg1image2contours <- function(x,y,z1,z2,z3,xyg,ttl=""){
 
 
 ###################################################
-### code chunk number 56: partDeriv.Rnw:1042-1043
+### code chunk number 56: partDeriv.Rnw:1066-1067
 ###################################################
 print_deriv <- function(txt,l,at=42){
     ret<-""

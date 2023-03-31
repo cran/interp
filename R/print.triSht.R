@@ -2,7 +2,7 @@ print.triSht<-function(x,...)
 {
   if(!inherits(x,"triSht"))
     stop("x must be of class \"triSht\"")
-  cat("Delauney triangulation, node and triangle indices:\n")
+  cat("Delaunay triangulation, node and triangle indices:\n")
   cat("triangle: nodes (a,b,c), neighbour triangles [i,j,k] \n")
   for (i in 1:x$nt)
     {

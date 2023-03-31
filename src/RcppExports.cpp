@@ -11,6 +11,21 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// BiLinear
+List BiLinear(NumericVector x, NumericVector y, NumericMatrix z, NumericVector x0, NumericVector y0);
+RcppExport SEXP _interp_BiLinear(SEXP xSEXP, SEXP ySEXP, SEXP zSEXP, SEXP x0SEXP, SEXP y0SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type z(zSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x0(x0SEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y0(y0SEXP);
+    rcpp_result_gen = Rcpp::wrap(BiLinear(x, y, z, x0, y0));
+    return rcpp_result_gen;
+END_RCPP
+}
 // aSpline
 List aSpline(NumericVector x, NumericVector y, NumericVector xout, CharacterVector method, int degree);
 RcppExport SEXP _interp_aSpline(SEXP xSEXP, SEXP ySEXP, SEXP xoutSEXP, SEXP methodSEXP, SEXP degreeSEXP) {
@@ -35,6 +50,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
     rcpp_result_gen = Rcpp::wrap(circum(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ConvexHull
+List ConvexHull(NumericVector x, NumericVector y);
+RcppExport SEXP _interp_ConvexHull(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(ConvexHull(x, y));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -139,14 +166,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // shullDeltri
-List shullDeltri(NumericVector x, NumericVector y);
-RcppExport SEXP _interp_shullDeltri(SEXP xSEXP, SEXP ySEXP) {
+List shullDeltri(NumericVector x, NumericVector y, LogicalVector jitter);
+RcppExport SEXP _interp_shullDeltri(SEXP xSEXP, SEXP ySEXP, SEXP jitterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(shullDeltri(x, y));
+    Rcpp::traits::input_parameter< LogicalVector >::type jitter(jitterSEXP);
+    rcpp_result_gen = Rcpp::wrap(shullDeltri(x, y, jitter));
     return rcpp_result_gen;
 END_RCPP
 }

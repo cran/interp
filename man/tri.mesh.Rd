@@ -10,7 +10,7 @@
   triangles, arcs or the convex hull.
 }
 \usage{
-tri.mesh(x, y = NULL, duplicate = "error")
+tri.mesh(x, y = NULL, duplicate = "error", jitter = FALSE)
 }
 \arguments{
   \item{x}{
@@ -37,6 +37,11 @@ tri.mesh(x, y = NULL, duplicate = "error")
       }
     }
   }
+    \item{jitter}{logical, adds some jitter to both coordinates as this can 
+    help in situations with too much colinearity. Default is \code{FALSE}.
+    Some error conditions within C++ code can also lead to enabling this 
+    internally (a warning will be displayed). 
+    }
 }
 \details{
   This function creates a Delaunay triangulation of a set of

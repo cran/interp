@@ -33,13 +33,16 @@ extern SEXP _interp_on(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_onHull(SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_partDerivGrid(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_partDerivPoints(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _interp_shullDeltri(SEXP, SEXP);
+extern SEXP _interp_shullDeltri(SEXP, SEXP, SEXP);
 extern SEXP _interp_triFind(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP _interp_circum(SEXP, SEXP);
+extern SEXP _interp_BiLinear(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP _interp_ConvexHull(SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_interp_aSpline",           (DL_FUNC) &_interp_aSpline,            5},
     {"_interp_inHull",            (DL_FUNC) &_interp_inHull,             4},
+    {"_interp_BiLinear",          (DL_FUNC) &_interp_BiLinear,           5},
     {"_interp_interpDeltri",      (DL_FUNC) &_interp_interpDeltri,       6},
     {"_interp_interpShull",       (DL_FUNC) &_interp_interpShull,       18},
     {"_interp_left",              (DL_FUNC) &_interp_left,               7},
@@ -48,9 +51,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_interp_onHull",            (DL_FUNC) &_interp_onHull,             4},
     {"_interp_partDerivGrid",     (DL_FUNC) &_interp_partDerivGrid,     12},
     {"_interp_partDerivPoints",   (DL_FUNC) &_interp_partDerivPoints,   12},
-    {"_interp_shullDeltri",       (DL_FUNC) &_interp_shullDeltri,        2},
+    {"_interp_shullDeltri",       (DL_FUNC) &_interp_shullDeltri,        3},
     {"_interp_triFind",           (DL_FUNC) &_interp_triFind,            8},
     {"_interp_circum",            (DL_FUNC) &_interp_circum,             2},
+    {"_interp_ConvexHull",        (DL_FUNC) &_interp_ConvexHull,         2},
     {NULL, NULL, 0}
 };
 

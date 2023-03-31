@@ -1,6 +1,5 @@
 This package contains a FOSS (re)implementation of the interp* functions from
-package akima, as well as FOSS version of the basic functions of package tripack.
+package akima, as well as FOSS version of most functions of package tripack.
 
-These functions are backward compatible in its arguments.
+These functions are backward compatible in their arguments.
 
-Currently the implementation is only partly finished.

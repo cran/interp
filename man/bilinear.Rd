@@ -1,5 +1,6 @@
 \name{bilinear}
 \alias{bilinear}
+\alias{BiLinear}
 \title{
   Bilinear Interpolation for Data on a Rectangular grid
 }
@@ -23,6 +24,7 @@
 }
 \usage{
 bilinear(x, y, z, x0, y0)
+BiLinear(x, y, z, x0, y0)
 }
 
 \arguments{
@@ -43,9 +45,13 @@ bilinear(x, y, z, x0, y0)
   }
 }
 \note{
-  This function was part of the akima package but not related to 
+  This Fortran function was part of the akima package but not related to 
   any of Akimas algorithms and under GPL. So it could be transfered
   into the interp package without changes.
+
+  \code{BiLinear} is a C++ reimplementation, maybe it will replace the Fortran 
+  implementation later, so
+  its name may change in futrure versions.
 }
 \value{
   This function produces a list of interpolated points:

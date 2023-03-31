@@ -205,7 +205,7 @@ void write_Triads(std::vector<Triad> &ts, char * fname){
 
  */
 
-int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
+int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 {
 
   int nump = (int) pts.size();
@@ -590,6 +590,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
 	trx.ac = numt+1;
 
 	// index back into the triads.
+	if(triads.size()>=tridx[p]+1){
 	Triad &txx = triads[tridx[p]];
 	if( ( trx.b == txx.a && trx.c == txx.b) |( trx.b == txx.b && trx.c == txx.a)) {
 	  txx.ab = numt;
@@ -603,6 +604,9 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
 
 	triads.push_back( trx );
 	numt++;
+	} else {
+	  return(-10);
+	}
       }
       triads[numt-1].ac=-1;
 
@@ -626,6 +630,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
 
   }
 
+  // 
   // cerr << "of triangles " << triads.size() << " to be flipped. "<< endl;
 
   //  write_Triads(triads, "tris0.mat");
@@ -641,6 +646,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
 
   //  write_Triads(triads, "tris1.mat");
 
+  // 
   // cerr << "n-ids " << ids.size() << endl;
 
 
@@ -651,8 +657,15 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
     nits = (int) ids2.size();
     ids.swap(ids2);
 
+    // 
     // cerr << "flipping cycle  " << nit << "   active triangles " << nits << endl;
 
+    if(nits>2*(2*pts.size()-ch_size-2)){
+      // too many triangles (we have max. 2n − h − 2 triangles and 3n−h−3 edges)
+      return(-13); // calling function will retry with some jitter error 
+                   // which should resolve this in case of too much 
+                   // collinear pints
+    }
     nit ++;
     if( tf < 0 ){
       // cerr << "cannot triangualte this set " << endl;
@@ -671,7 +684,8 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads)
     tf = T_flip_pro_idx( pts, triads, slump, ids, ids2);
     ids.swap(ids2);
     nits = (int) ids.size();
-    //cerr << "flipping cycle  " << nit << "   active triangles " << nits << endl;
+    //
+    // cerr << "flipping cycle  " << nit << "   active triangles " << nits << endl;
 
     nit ++;
     if( tf < 0 ){
@@ -742,6 +756,7 @@ int de_duplicate( std::vector<Shx> &pts, std::vector<int> &outx ){
 
   for( int k=0; k<nump-1; k++){
     if( dpx[k].r == dpx[k+1].r && dpx[k].c == dpx[k+1].c ){
+      // 
       // cerr << "duplicate-point ids " << dpx[k].id << "  " << dpx[k+1].id << "   at  ("  << pts[dpx[k+1].id].r << "," << pts[dpx[k+1].id].c << ")" << endl;
       outx.push_back( dpx[k+1].id);
     }

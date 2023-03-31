@@ -3,7 +3,7 @@
 
 
 // [[Rcpp::export(name="shull.deltri")]]
-List shullDeltri(NumericVector x, NumericVector y) {
+List shullDeltri(NumericVector x, NumericVector y, LogicalVector jitter=false) {
 
   std::vector<Shx> pts;
   std::vector<Triad> triads;
@@ -11,9 +11,18 @@ List shullDeltri(NumericVector x, NumericVector y) {
 
   int nx=x.size();
   int ny=y.size();
-
+  double x_range=max(x)-min(x);
+  double y_range=max(y)-min(y);
+  
   List ret;
 
+  // get convex hull (and its size)
+  List CH = ConvexHull(x, y);
+  NumericVector cx = CH["x"];
+  NumericVector cy = CH["y"];
+
+  int CHsize = cx.size();
+  
   if(nx!=ny)
     ::Rf_error("length of x and y dont match!");
 
@@ -23,8 +32,22 @@ List shullDeltri(NumericVector x, NumericVector y) {
     // call shDt
 
     Triang tXYZ=shDt(Rcpp::as<std::vector<double> >(x),
-		     Rcpp::as<std::vector<double> >(y));
+		     Rcpp::as<std::vector<double> >(y),
+		     x_range, y_range, CHsize);
 
+    if(tXYZ.nT==-1){
+      // error -13 occured, restart with jitter, for this exit with error
+      // condition into R code for reentry:
+      // dummy return List
+      ret=List::create(_("n")=0, _("x")=0, _("y")=0,
+                       _("nt")=-1 /* = error code */,
+                       _("trlist")=0,
+                       _("cclist")=0,
+                       _("nch")=0, _("ch")=0,
+                       _("na")=0, _("a1")=0,
+                       _("a2")=0);
+      return ret;
+    }
 
     int nT=tXYZ.nT;
 
@@ -89,7 +112,7 @@ List shullDeltri(NumericVector x, NumericVector y) {
         nCH++;
       }
     }
-    //Rcout << "nCH=" << nCH << std::endl;
+    // Rcout << "nCH=" << nCH << std::endl;
 
     // initialize in correct size
     tXYZ.ch=std::vector<int>(nCH);
@@ -107,13 +130,14 @@ List shullDeltri(NumericVector x, NumericVector y) {
     // get arcs
     int ia=0;
     for(int i=0; i<nT; i++){
-      if(ia>nArcs)
-        Rf_error("error counting arcs!");
-
+      if(ia>nArcs){
+        Rf_error("shull: error counting arcs: %i > %i \n",ia,nArcs);
+      }
       // store arcs if not already done:
       bool found=false;
       for(int j=0; j<ia; j++){
-        if((tXYZ.a1[j]==tXYZ.i3[i]) && (tXYZ.a2[j]==tXYZ.i2[i])){ 
+        if( ((tXYZ.a1[j]==tXYZ.i3[i]) && (tXYZ.a2[j]==tXYZ.i2[i])) ||
+	    ((tXYZ.a1[j]==tXYZ.i2[i]) && (tXYZ.a2[j]==tXYZ.i3[i])) ){ 
           found=true;
           tXYZ.k1[i]=j;
           break;
@@ -127,7 +151,8 @@ List shullDeltri(NumericVector x, NumericVector y) {
       }
       found=false;
       for(int j=0; j<ia; j++){
-        if((tXYZ.a1[j]==tXYZ.i1[i]) && (tXYZ.a2[j]==tXYZ.i3[i])){ 
+        if( ((tXYZ.a1[j]==tXYZ.i1[i]) && (tXYZ.a2[j]==tXYZ.i3[i])) ||
+	    ((tXYZ.a1[j]==tXYZ.i3[i]) && (tXYZ.a2[j]==tXYZ.i1[i])) ){ 
           found=true;
           tXYZ.k2[i]=j;
           break;
@@ -141,7 +166,8 @@ List shullDeltri(NumericVector x, NumericVector y) {
       }
       found=false;
       for(int j=0; j<ia; j++){
-        if((tXYZ.a1[j]==tXYZ.i2[i]) && (tXYZ.a2[j]==tXYZ.i1[i])){
+        if( ((tXYZ.a1[j]==tXYZ.i2[i]) && (tXYZ.a2[j]==tXYZ.i1[i])) ||
+	    ((tXYZ.a1[j]==tXYZ.i1[i]) && (tXYZ.a2[j]==tXYZ.i2[i])) ){
           found=true;
           tXYZ.k3[i]=j;
           break;
@@ -218,7 +244,7 @@ List shullDeltri(NumericVector x, NumericVector y) {
 }
 
 
-Triang shDt(std::vector<double> x, std::vector<double> y){
+Triang shDt(std::vector<double> x, std::vector<double> y, double x_range, double y_range, int ch_size){
 
   // Note: circumcircles and convex hull only done in shullDeltri
   //       as this is not needed for the application within Akimas
@@ -233,7 +259,8 @@ Triang shDt(std::vector<double> x, std::vector<double> y){
   int nx=x.size();
   int ny=y.size();
 
-  if(nx!=ny)
+
+    if(nx!=ny)
     ::Rf_error("length of x and y dont match!");
 
   try {
@@ -249,13 +276,16 @@ Triang shDt(std::vector<double> x, std::vector<double> y){
       pt.c=y[i];
       pts.push_back(pt);
     }
-
+    
     // Note: points are already deduplicated in R!
     int n_dups = de_duplicate(pts, outx);
     if (n_dups != 0) {
       stop("shull: duplicate points found");
     }
-    int ierr = s_hull_pro(pts, triads);
+    //int trials=0;
+    //int max_trials=3;
+    //while(trials<max_trials){
+    int ierr = s_hull_pro(pts, triads, ch_size);
     if (ierr != 1) {
       if (ierr == -1) {
         stop("shull: less than 3 points, aborting");
@@ -269,13 +299,56 @@ Triang shDt(std::vector<double> x, std::vector<double> y){
         stop("shull: triangle flipping error");
       } else if (ierr == -6) {
         stop("shull: triangle flipping error");
+      } else if (ierr == -13) {
+        //if(trials==0)
+        Rf_warning("shull: too many triangles to swap, will retry with some jitter\n");
+        //else
+        //  Rf_warning("shull: still too many triangles to swap, will retry once more with some jitter\n");
+        // dummy allocation
+        Txy.i1=std::vector<int>(1);
+        Txy.i2=std::vector<int>(1);
+        Txy.i3=std::vector<int>(1);
+        Txy.j1=std::vector<int>(1);
+        Txy.j2=std::vector<int>(1);
+        Txy.j3=std::vector<int>(1);
+        Txy.k1=std::vector<int>(1);
+        Txy.k2=std::vector<int>(1);
+        Txy.k3=std::vector<int>(1);
+        Txy.ch=std::vector<int>(1);
+        Txy.a1=std::vector<int>(1);
+        Txy.a2=std::vector<int>(1);
+        Txy.xc=std::vector<double>(1);
+        Txy.yc=std::vector<double>(1);
+        Txy.rc=std::vector<double>(1);
+        Txy.ar=std::vector<double>(1);
+        Txy.rt=std::vector<double>(1);
+        Txy.nT=-1; // use this as error indicator for restart with jitter
+        return Txy;
+        /*
+         trials++;
+         double jeps=1e-6;
+         pts.clear();
+         for(int i=0; i<nx; i++){
+         Shx pt;
+         pt.id=i;
+         pt.r=x[i]+Rcpp::as<std::vector<double> >(runif(1,-jeps,jeps))[0]*x_range;
+         pt.c=y[i]+Rcpp::as<std::vector<double> >(runif(1,-jeps,jeps))[0]*y_range;
+         Rcout << Rcpp::as<std::vector<double> >(runif(1,-jeps,jeps))[0]*x_range << std::endl;
+         Rcout << Rcpp::as<std::vector<double> >(runif(1,-jeps,jeps))[0]*y_range << std::endl;
+         pts.push_back(pt);
+         }
+         triads.clear();
+         */
       } else {
-        stop("shull: unspecified error");
+        stop("unspecified error %i in shull!", ierr);
       }
+      //} else {
+      //  break;
+      //}
     }
-
+    
     int nT = triads.size();
-
+    
     Txy.i1=std::vector<int>(nT);
     Txy.i2=std::vector<int>(nT);
     Txy.i3=std::vector<int>(nT);
@@ -296,33 +369,61 @@ Triang shDt(std::vector<double> x, std::vector<double> y){
     Txy.rt=std::vector<double>(1);
 
 
+//    int insert_pos=0;
     for(int i=0; i<nT; i++){
       // check for counter clockwise orientation:
       double orientation=(x[triads[i].c]-x[triads[i].b])*(y[triads[i].b]-y[triads[i].a]) +
         (y[triads[i].c]-y[triads[i].b])*(x[triads[i].a]-x[triads[i].b]);
-      if(orientation==0.0)
-        Rf_error("triangle collapsed!");
+      if(orientation==0.0){
+        Rf_warning("triangle collapsed!");
+        // TODO: skip this triangle
+         Txy.i1[i]=triads[i].a;
+         Txy.i2[i]=triads[i].b;
+         Txy.i3[i]=triads[i].c;
+         Txy.j1[i]=triads[i].bc;
+         Txy.j2[i]=triads[i].ac;
+         Txy.j3[i]=triads[i].ab;  
+      }
       //Rcout << "tr " << i << " or: " << orientation << std::endl;
       if(orientation<0.0){
         // a,b,c is already counter clockwise:
+        /* Txy.i1[insert_pos]=triads[i].a;
+        Txy.i2[insert_pos]=triads[i].b;
+        Txy.i3[insert_pos]=triads[i].c;
+        Txy.j1[insert_pos]=triads[i].bc;
+        Txy.j2[insert_pos]=triads[i].ac;
+        Txy.j3[insert_pos]=triads[i].ab; */
+        
         Txy.i1[i]=triads[i].a;
         Txy.i2[i]=triads[i].b;
         Txy.i3[i]=triads[i].c;
         Txy.j1[i]=triads[i].bc;
         Txy.j2[i]=triads[i].ac;
         Txy.j3[i]=triads[i].ab;
+        
+        //insert_pos++;
       } else {
         // force counter clockwise
+        /*Txy.i1[insert_pos]=triads[i].a;
+        Txy.i2[insert_pos]=triads[i].c;
+        Txy.i3[insert_pos]=triads[i].b;
+        Txy.j1[insert_pos]=triads[i].bc ;
+        Txy.j2[insert_pos]=triads[i].ab;
+        Txy.j3[insert_pos]=triads[i].ac;+*/
+
+        
         Txy.i1[i]=triads[i].a;
         Txy.i2[i]=triads[i].c;
         Txy.i3[i]=triads[i].b;
         Txy.j1[i]=triads[i].bc ;
         Txy.j2[i]=triads[i].ab;
         Txy.j3[i]=triads[i].ac;
+        //insert_pos++;
       }
     }
+//    Txy.nT=insert_pos;
     Txy.nT=nT;
-
+    
 
     return Txy;
 
@@ -344,8 +445,13 @@ CC circum(double x1,double y1, double x2,double y2, double x3,double y3){
 
 
   double D = (x1 - x3) * (y2 - y3) - (x2 - x3) * (y1 - y3);
-  if(D==0)
-    Rf_error("three points coincide or are collinear!");
+  if(D==0){
+    Rf_warning("three points coincide or are collinear!");
+    ret.xc = NA_REAL;
+    ret.yc = NA_REAL;
+    ret.rc = NA_REAL;
+    ret.ar = 0;
+  } else {
   ret.xc =
 (((x1 - x3) * (x1 + x3) + (y1 - y3) * (y1 + y3)) / 2 * (y2 - y3)
     -  ((x2 - x3) * (x2 + x3) + (y2 - y3) * (y2 + y3)) / 2 * (y1 - y3))
@@ -360,7 +466,7 @@ CC circum(double x1,double y1, double x2,double y2, double x3,double y3){
 
   // http://www.mathopenref.com/coordtrianglearea.html
   ret.ar = std::abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0;
-
+  }
   return ret;
 }
 

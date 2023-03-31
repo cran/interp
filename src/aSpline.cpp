@@ -75,7 +75,7 @@ List aSpline(NumericVector x,
   xmax=x[nx-1];
   
   for(int j=0; j<nx; j++){
-    double xm1;
+    double xm1=R_NegInf;
     // check for increasing data, get min/max x
     if(j==0)
       xm1=x[j];

@@ -1,5 +1,5 @@
 %% -*- mode: Rnw; coding: utf-8; -*-
-%\VignetteIndexEntry{Local polynomial regression in two variables: Estimating partial derivatives}
+%\VignetteIndexEntry{Local polynomial regression in two variables applied to estimating partial derivatives}
 %\VignetteDepends{Deriv,Ryacas,ggplot2,gridExtra,lattice,stringi,stringr}
 %\VignetteKeywords{nonparametric}
 %\VignettePackage{interp}
@@ -11,6 +11,8 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{flexisym}
+\usepackage{breqn}
 \usepackage{bm}
 \usepackage{graphicx}
 
@@ -89,13 +91,11 @@
   Roger Bivand\\ %Department of Economics,
   Norwegian School of Economics}
 
-\title{Local Polynomial Regression: How the \proglang{R} Package
-  \pkg{interp} estimates partial derivatives for later use in Spline
-  Interpolation}
+\title{Local Polynomial Regression used to estimate partial derivatives for later use in Spline Interpolation}
 
 %% for pretty printing and a nice hypersummary also set:
 \Plainauthor{Albrecht Gebhardt, Roger Bivand} %% comma-separated
-\Plaintitle{Local Polynomial Regression: How the R Package interp estimates partial derivatives for later use in Spline Interpolation} %% without formatting
+\Plaintitle{Local Polynomial Regression used to estimate partial derivatives for} %% without formatting
 \Shorttitle{Local Polynomial Regression in \proglang{R} Package \pkg{interp}} %% a short title (if necessary)
 
 %% an abstract and keywords
@@ -112,12 +112,12 @@ This is the first of planned three vignettes for this package (not yet finished)
 
 %% publication information
 %% NOTE: Typically, this can be left commented and will be filled out by the technical editor
-%% \Volume{13}
-%% \Issue{9}
-%% \Month{September}
-%% \Year{2004}
-%% \Submitdate{2004-09-29}
-%% \Acceptdate{2004-09-29}
+% \Volume{XX}
+%% \Issue{X}
+%% \Month{XXXXXXX}
+%% \Year{XXXX}
+%% \Submitdate{XXXX-XX-XX}
+%% \Acceptdate{XXXX-XX-XX}
 
 %% The address of (at least) one author should be given
 %% in the following format:
@@ -217,22 +217,22 @@ Finally three vignettes will be available for this package:
 \begin{enumerate}
 \item this one related to partial derivatives estimation,
 \item a next one describing interpolation related stuff
-\item and a third one dealing with triangulations and voronoi mosaics.
+\item and a third one dealing with triangulations and Voronoi mosaics.
 \end{enumerate}
-Currently only the first text is available and not yet finished.
+
 
 \section[Introduction]{Introduction}
 \label{sec:intro}
-Altough the main intention of this \cmd{R} package is
+Altough the main intention of this \proglang{R} package is
 interpolation, it also contains routines for local polynomial
 regression. The reason is that the spline interpolation implemented by
-\cmd{interp::interp(...,method="akima")} needs estimates of the
+\cmd{interp::interp(..., method="akima")} needs estimates of the
 partial derivatives of the interpolated function up to degree 2.
 
 One approach to get such estimates is to perform a local polynomial
 regression \citep[see e.g.][p. 19]{fan1996local} and get the 
 partial derivatives as a side
-effect, as explained later. This is also applied in Akimas original
+effect, as explained later. This is also applied in Akima's original
 code in a special hardcoded way (using a fixed local bandwidth and a
 uniform kernel). Once this routines had been implemented and used
 internally in the \cmd{interp::interp(...,method="akima")} it was an
@@ -242,7 +242,7 @@ package \cmd{"interp"}.
 \section{Kernel Functions}
 \label{sec:kernel}
 In the next section we will use the notion of kernel functions, so
-lets start with this definition.
+let us start with this definition.
 
 \begin{definition}
 A one-dimensional kernel function\index{kernel function} $K(x)$ is
@@ -252,12 +252,12 @@ A one-dimensional kernel function\index{kernel function} $K(x)$ is
   \item $K(x)\ge 0$
   \item $\int_{\R}K(x)dx=1$
   \end{enumerate}
-  Lets denote the associated stochastic variable with $X_{K}$ for
+  Let us denote the associated stochastic variable with $X_{K}$ for
   easier notation, it otherwise carries no meaning.
 \item $K$ has the property $\int_{\R}x\cdot K(x)=0$ (i.e. $\EV X_{K}=0$,
   kernel function is centered at zero) and
   
-\item $K$ is assumed to be symmtric $K(-x)=K(x)$ and
+\item $K$ is assumed to be symmetric $K(-x)=K(x)$ and
 \item $0<\int_{\R}x^{2}\cdot K(x)dx=\sigma^{2}_{K}<\infty$, i.e.
   $\Var X_{K}$ exists.
   \end{enumerate}
@@ -283,18 +283,18 @@ in table \ref{tab:kernels}.
   \label{tab:kernels}
 \end{table}
 
-A common approach to create twodimensional kernel functions is to
-derive them from onedimensional kernels as bivariate densities with
+A common approach to create two-dimensional kernel functions is to
+derive them from one-dimensional kernels as bivariate densities with
 independent components:
 \begin{eqnarray*}
   K_{X,Y}(x,y)&=&K_{X}(x)K_{Y}(y)
 \end{eqnarray*}
-Both $K_X$ and $K_Y$ are choosen from the same kernel function type.
+Both $K_X$ and $K_Y$ are chosen from the same kernel function type.
 
 
 \section{Bivariate Local Polynomial Regression}
 \label{sec:local-polyn-regr}
-Lets start with a data set $\{(\Vect{x}_{i},z_{i})|i=1,\ldots,n\}$
+Let us start with a data set $\{(\Vect{x}_{i},z_{i})|i=1,\ldots,n\}$
 with vectors $\Vect{x}_{i}=(x_{i},y_{i})^{\top}\in\R^{2}$ and real
 numbers $z_{i}\in\R$. Assume a trend model
 $$
@@ -327,7 +327,7 @@ interpret the estimated parameters:
 \end{eqnarray*}
 With the estimates
 $\widehat{\beta}_{ij}, i=1,\ldots,r, j=1,\ldots,r-i$ for a given
-location $\Vect{x}$ we evaluate this Taylor expansion at
+location $\Vect{x}$, we evaluate this Taylor expansion at
 $\Vect{x}=\Vect{x}_0$, which means that all terms
 $(x-x_0)^{i}(y-y_0)^{j}$ with $i>0$ or $j>0$ vanish.  Only the
 estimated function and its derivatives at location $\Vect{x}=\Vect{x}_0$ remain:
@@ -348,25 +348,49 @@ the values of the derivatives of $m$ in
 
 \section{Implementation details}
 \label{sec:impl}
+
+A call to function \cmd{interp::locpoly()} can be made with the following arguments:
+
+\begin{Schunk}
+  \begin{Sinput}
+locpoly(x, y, z, xo = seq(min(x), max(x), length = nx), yo = seq(min(y),
+ max(y), length = ny), nx = 40, ny = 40, input = "points", output = "grid",
+ h = 0, kernel = "uniform", solver = "QR", degree = 3, pd = "")
+  \end{Sinput}
+\end{Schunk}
+The first three arguments are vectors containing the data set. A future version may implement a similar scheme as used in \cmd{interp::interp()} where it is possible to use also a matrix of a rectangular data grid. Currently only the option \cmd{input="grid"} is implemented. In contrast the return value via \cmd{output="grid"} is by default a matrix of values according to a grid generated by \cmd{xo} and \cmd{yo} or automatically with dimension \cmd{nx} time \cmd{ny}. But also point wise output can be returned via \cmd{output="points"}, in this case \cmd{xo} and \cmd{yo} have to be of same length.
+
+The \cmd{kernel} parameter takes the values \cmd{"uniform"}, \cmd{"triangle"}, \cmd{"epanechnikov"}, \cmd{"biweight"}, \cmd{"tricube"}, \cmd{"triweight"}, \cmd{"cosine"} and \cmd{"gaussian"} (default), see table \ref{tab:kernels}. The bandwidth parameter \cmd{h} is interpreted as a local nearest neighbour bandwidth iff given as a scalar. I then is a proportion between 0 and 1 of the data set to be put into a local search neighbourhood.
+If it is specified as a vector with two elements, they are interpreted as proportions of the data range in $x$ and $y$ direction and are taken as a pair of fixed global two dimensional bandwiths, compare the examples below. 
+
+The  argument
+\cmd{solver} (default is \cmd{"QR"}, but also \cmd{"LLT"},
+\cmd{"SVD"}, \cmd{"Eigen"} and \cmd{"CPivQR"} are available) chooses the numerical method to be
+used in the local regression step for solving the normal equations generated by the weighted least squares problem, compare \cmd{fastLm()} in
+\citep{rcppeigen}.
+
 Function \cmd{interp::locpoly()} returns estimated values of the
 regression function as well as estimated partial derivatives up to
-order 3 (Akima splines only need derivatives up to order 2). 
-This access to the partial derivatives was the main intent
-for writing this code as there are already many other local polynomial
-regression implementations in R. Beside the univariate local
-estimators \cmd{stats::ksmooth()}, \cmd{locpol::locPolSmootherC()} and
+order 3 (Akima splines only need derivatives up to order 2). If the input parameter \cmd{pd} is empty (\cmd{""}) only the local regression is returned. If it is set to (\cmd{"all"}) all derivatives up to order three (or less if \cmd{degree} is less then 3) including the regression result itself is returned. Otherwise using the encodings \cmd{"x"}, \cmd{"y"}, \cmd{"xx"}, $\ldots$, \cmd{"xyy"} and \cmd{"yyy"} a single partial derivative can be selected.
+
+This access to the partial derivatives was the main intent for writing this
+code as there are already many other local polynomial regression
+implementations in R. Beside the univariate local estimators
+\cmd{stats::ksmooth()}, \cmd{locpol::locPolSmootherC()} and
 \cmd{KernSmooth::locpoly()} (the last two also return univariate
-derivatives) the packages \cmd{locfit} and \cmd{sm} provide amongst
+derivatives) the packages \pkg{locfit} and \pkg{sm} provide amongst
 other things bivariate local regression methods. But to our knowledge
-currently (spring 2022) no bivariate local regression estimators for
-partial derivatives exists. 
-%(TODO: double check). 
-But anyhow, to be
-used from within the C++ implementation of \cmd{interp::interp()} we
-had to implement this estimator directly also in C++ in package {interp}.
+currently (winter 2023), no bivariate local regression estimators for
+partial derivatives exist. Package \pkg{NNS} also provides numerical
+differentiation but it uses finite difference methods. The original
+code from Akima also uses a partial derivatives estimator which is
+equivalent to a local regression with uniform kernels.  Anyhow, to be
+used from within the \proglang{C++} implementation of
+\cmd{interp::interp()} we had to implement this estimator directly
+also in \proglang{C++} in package \pkg{interp} and could not rely on
+any external package.
 
-
-This is a short overview (to be extend in a later version of this document) 
+This is a short overview (to be extended in a later version of this document) 
 of the steps that had to be implemented:
 \begin{itemize}
 \item Formulate the normal equations for the above weighted least squares 
@@ -384,8 +408,8 @@ in \cmd{RcppEigen}. Our implementation inherits these options.
 \label{sec:regular}
 
 We will test \texttt{locpoly()} now with a bicubic polynomial on the
-unit square on a \texttt{ng} by \texttt{ng} grid. Later tests using
-Franke functions will follow.
+unit square on an \texttt{ng} by \texttt{ng} grid. Later tests using
+Franke functions \citep{franke:82} will follow.
 
 Set the $x$ - $y$ size of a square data grid to
 <<>>=
@@ -406,7 +430,7 @@ Next both a fixed global and a varying local bandwidth is needed:
 bwg <- 0.33  
 bwl <- 0.11  
 @ 
-The global bandwidth (=\Sexpr{bwg}) is interpreted as ratio of the
+The global bandwidth (=\Sexpr{bwg}) is interpreted as the ratio of the
 $x$ and $y$ range respective. So in this example the ``moving window''
 of the kernel function covers a rectangular data region of
 $1/3\times 1/3=1/9$ of the bounding box of the data set.
@@ -583,7 +607,7 @@ ny <- length(yg)
 xx <- t(matrix(rep(xg,ny),nx,ny))
 yy <- matrix(rep(yg,nx),ny,nx)
 @
-Now fill all exact results deriven from symbolic computation into the
+Now fill all exact results derived from symbolic computation into the
 grid matrices, again one of the helper functions from appendix
 \ref{sec:appendix} is used:
 <<helperGrid,echo=FALSE>>=
@@ -1000,7 +1024,7 @@ gg <- grid.arrange(grobs=gList(ggplotGrob(pf),t1,t2,ggplotGrob(pfx),ggplotGrob(p
 \end{figure}
 Especially the performance of the uniform kernel with its
 discontinuous behavior at the borders of its support drops visibly. 
-Globally spoken, the local bandwidth estimators capture more details, across all
+Considered globally, the local bandwidth estimators capture more details, across all
 kernels. But combined with a kernel with bounded support (uniform or
 epanechnikov in the test) they show problems at the border of the
 region. So the default setting of a gaussian kernel is well founded.

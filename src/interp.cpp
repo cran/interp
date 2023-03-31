@@ -117,7 +117,7 @@ List interpDeltri(NumericVector x, NumericVector y,
       } else Rf_error("invalid output specification!");
     }
 
-    ret=List::create(_("x")=x, _("y")=y, _("z")=z);
+    ret=List::create(_("x")=x, _("y")=y, _("z")=z, _("err")=0);
 
     return ret ;
 
@@ -151,7 +151,9 @@ List interpShull(NumericVector x, NumericVector y,
 
   int nxD=xD.size();
   int nyD=yD.size();
-
+  double x_range=max(xD)-min(xD);
+  double y_range=max(yD)-min(yD);
+  
   if(as<std::string>(input)=="points" && nxD!=nyD)
     ::Rf_error("length of xD and yD dont match!");
 
@@ -174,18 +176,36 @@ List interpShull(NumericVector x, NumericVector y,
   try{
 
     // part 0
-
+    // determine size n_ch of convex hull as it defines the 
+    // number of triangles in the triangulation as (2*n-n_ch-2)
+    List CH = ConvexHull(xD, yD);
+    NumericVector cx = CH["x"];
+    // NumericVector cy = CH["y"]; not needed
+    
+    int ch_size = cx.size(); // needed to check if  the swap
+                             // step in shDt gets out of control
+    
     // do s-Hull triangulation:
     // call shDt
+    // Rcout << "xD/yD size: " << xD.size() << " " << yD.size() << std::endl;
     Triang tXY=shDt(Rcpp::as<std::vector<double> >(xD),
-		    Rcpp::as<std::vector<double> >(yD));
+		    Rcpp::as<std::vector<double> >(yD),
+		    x_range, y_range, ch_size);
+    // TODO: handle restart with jitter 
+    if(tXY.nT==-1){
+      // error -13 occured, restart with jitter, for this exit with error
+      // condition into R code for reentry:
+      // dummy return List
+      ret=List::create(_("x")=0, _("y")=0, _("z")=0, _("err")=-13);
+
+      return ret;
+    }
+    
     // note: triangles are enumerated counterclockwise
 
 
 
     int nT=tXY.nT;
-
-    // Rcout << "get bounding boxes" <<std::endl;
 
     // get bounding boxes (SW <-> NE) for all triangles:
 
@@ -219,17 +239,16 @@ List interpShull(NumericVector x, NumericVector y,
       jTne[i]=nG-1;
       kTne[i]=mG-1;
 
-      // Rcout << "bb to grid indices ..." << std::endl;
-
       for(int j=0; j<nG; j++){
 	if(x[j]<xsw) jTsw[i]=j;
 	if(x[nG-j-1]>xne) jTne[i]=nG-j-1;
       }
       for(int k=0; k<mG; k++){
-	if(y[k]<ysw) kTsw[i]=1;
-	if(y[nG-k-1]>yne) kTne[i]=mG-k-1;
+	if(y[k]<ysw) kTsw[i]=k;
+	if(y[mG-k-1]>yne) kTne[i]=mG-k-1;
       }
     }
+
 
     // part 1
     // TODO for !linear
@@ -1181,8 +1200,8 @@ List interpShull(NumericVector x, NumericVector y,
 
           if(as<std::string>(output)=="grid"){
             // iterate only over grid points (j,k) inside bounding box of triangle i
-            for(int j=jTsw[i]; j<jTne[i]; j++) {
-              for(int k=kTsw[i]; k<kTne[i]; k++) {
+            for(int j=jTsw[i]; j<=jTne[i]; j++) {
+              for(int k=kTsw[i]; k<=kTne[i]; k++) {
                 // calculate barycentric coordinates:
                 double a = ((yT[1] - yT[2])*(x[j] - xT[2]) + (xT[2] - xT[1])*(y[k] - yT[2])) /
                   ((yT[1] - yT[2])*(xT[0] - xT[2]) + (xT[2] - xT[1])*(yT[0] - yT[2]));
@@ -1288,8 +1307,8 @@ List interpShull(NumericVector x, NumericVector y,
 
       if(as<std::string>(output)=="grid"){
 	// iterate only over grid points (j,k) inside bounding box of triangle i
-	for(int j=jTsw[i]; j<jTne[i]; j++) {
-	  for(int k=kTsw[i]; k<kTne[i]; k++) {
+	for(int j=jTsw[i]; j<=jTne[i]; j++) {
+	  for(int k=kTsw[i]; k<=kTne[i]; k++) {
 	    // calculate barycentric coordinates:
 	    double a = ((yT[1] - yT[2])*(x[j] - xT[2]) + (xT[2] - xT[1])*(y[k] - yT[2])) /
 	      ((yT[1] - yT[2])*(xT[0] - xT[2]) + (xT[2] - xT[1])*(yT[0] - yT[2]));
@@ -1324,7 +1343,7 @@ List interpShull(NumericVector x, NumericVector y,
     } // triangle
 
 
-    ret=List::create(_("x")=x, _("y")=y, _("z")=z);
+    ret=List::create(_("x")=x, _("y")=y, _("z")=z, _("err")=0);
 
         return ret;
 

@@ -1,5 +1,6 @@
 \name{bilinear.grid}
 \alias{bilinear.grid}
+\alias{BiLinear.grid}
 \title{
   Bilinear Interpolation for Data on a Rectangular grid
 }
@@ -23,6 +24,8 @@
 }
 \usage{
 bilinear.grid(x,y,z,xlim=c(min(x),max(x)),ylim=c(min(y),max(y)),
+                         nx=40,ny=40,dx=NULL,dy=NULL)
+BiLinear.grid(x,y,z,xlim=c(min(x),max(x)),ylim=c(min(y),max(y)),
                          nx=40,ny=40,dx=NULL,dy=NULL)
 }
 
@@ -73,9 +76,13 @@ bilinear.grid(x,y,z,xlim=c(min(x),max(x)),ylim=c(min(y),max(y)),
   http://www.ipol.im/pub/art/2011/g_lmii/article.pdf
 }
 \note{
-  This function was part of the akima package but not related to 
+  This Fortran function was part of the akima package but not related to 
   any of Akimas algorithms and under GPL. So it could be transfered
   into the interp package without changes.
+  
+  \code{BiLinear.grid} is a C++ reimplementation, maybe this will replace the 
+  Fortran implementation later. So its name may change in future versions, dont
+  rely on it currently.
 }
 
 

@@ -104,7 +104,7 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
   \item{method}{
     text, possible methods are (currently only, more is under
     developement) \code{"linear"} (piecewise linear interpolation within
-    the triangles of the Delauney triangulation, also
+    the triangles of the Delaunay triangulation, also
     referred to as barycentric interpolation based on barycentric 
     coordinates) and \code{"akima"} (a reimplementation for Akimas spline 
     algorithms for irregular gridded data with the accuracy of a 

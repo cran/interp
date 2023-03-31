@@ -40,7 +40,7 @@ bilinear.grid <- function(x,y,z,xlim=c(min(x),max(x)),ylim=c(min(y),max(y)),
       xi <- seq(xlim[1],xlim[2],by=dx)
       nx <- length(xi)
   } else {
-      xi <- seq(ylim[1],ylim[2],length=nx)
+      xi <- seq(xlim[1],xlim[2],length=nx)
   }
 
   if(!is.null(dx)){
@@ -57,6 +57,40 @@ bilinear.grid <- function(x,y,z,xlim=c(min(x),max(x)),ylim=c(min(y),max(y)),
   n0 <- nx*ny
 
   ret <- bilinear(x,y,z,xy[,1],xy[,2])
+
+ # return cell boundaries
+  list(x=xi,y=yi,z=t(matrix(ret$z,nrow=ny,ncol=nx,byrow=F)))
+}
+
+BiLinear.grid <- function(x,y,z,xlim=c(min(x),max(x)),ylim=c(min(y),max(y)),
+                         nx=40,ny=40,dx=NULL,dy=NULL){
+  Nx <- length(x)
+  Ny <- length(y)
+  if(dim(z)[1]!=Nx)
+    stop("dim(z)[1] and length of x differs!")
+  if(dim(z)[2]!=Ny)
+    stop("dim(z)[2] and length of y differs!")
+  if(!is.null(dx)){
+      xi <- seq(xlim[1],xlim[2],by=dx)
+      nx <- length(xi)
+  } else {
+      xi <- seq(ylim[1],ylim[2],length=nx)
+  }
+
+  if(!is.null(dx)){
+      yi <- seq(ylim[1],ylim[2],by=dy)
+      ny <- length(yi)
+  } else {
+      yi <- seq(ylim[1],ylim[2],length=ny)
+  }
+  xmat <- matrix(rep(xi,ny),nrow=ny,ncol=nx,byrow=TRUE)
+  ymat <- matrix(rep(yi,nx),nrow=ny,ncol=nx,byrow=FALSE)
+
+  xy <- cbind(c(xmat),c(ymat))
+
+  n0 <- nx*ny
+
+  ret <- BiLinear(x,y,z,xy[,1],xy[,2])
 
  # return cell boundaries
   list(x=xi,y=yi,z=t(matrix(ret$z,nrow=ny,ncol=nx,byrow=F)))

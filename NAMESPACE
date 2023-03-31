@@ -2,10 +2,13 @@
 useDynLib(interp)
 
 ## exports
+export("ConvexHull")
 export("aspline")
 export("aSpline")
 export("bilinear")
+export("BiLinear")
 export("bilinear.grid")
+export("BiLinear.grid")
 export("bicubic")
 export("bicubic.grid")
 export("interp")

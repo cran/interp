@@ -1,8 +1,10 @@
 \name{convex.hull}
 \title{Return the convex hull of a triangulation object}
 \usage{convex.hull(tri.obj, plot.it=FALSE, add=FALSE,...)
+       ConvexHull(x,y)
 }
 \alias{convex.hull}
+\alias{ConvexHull}
 \arguments{
   \item{tri.obj}{object of class \code{\link{triSht}}}
   \item{plot.it}{logical, if \code{TRUE} the convex hull of
@@ -10,11 +12,16 @@
   \item{add}{logical. if \code{TRUE} (and \code{plot.it=TRUE}), add to
     a current plot.}
   \item{...}{additional plot arguments}
+  \item{x}{only for \code{ConvexHull()}: \code{x} coordinates for C++ call to \code{ConvexHull}}
+  \item{y}{only for \code{ConvexHull()}: see \code{x}}
 }
 \description{
   Given a triangulation \code{tri.obj} of \eqn{n} points in the plane, this
   subroutine returns two vectors containing the coordinates
   of the nodes on the boundary of the convex hull.
+  
+  \code{ConvexHull} is an experimental C++ implementation of Grahams Scan
+  without previous triangulation, should be much faster.
 }
 \value{
   \item{x}{x coordinates of boundary nodes.}

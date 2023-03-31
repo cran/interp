@@ -107,6 +107,15 @@ interp <- function(x, y=NULL, z,
                                    baryweight,
                                    autodegree,adtol,
                                    smoothpde,akimaweight,nweight)
+                if(ans$err==-13){
+                  ## retry with jitter
+                  ans <- interpShull(xo,yo,jitter(x,1e-3),jitter(y,1e-3),z,linear,input,output,
+                                     kernel,h,
+                                     solver,degree,
+                                     baryweight,
+                                     autodegree,adtol,
+                                     smoothpde,akimaweight,nweight)
+                }
                 if(output=="points") # back to vector from matrix:
                     ans$z <- c(ans$z)
             } else

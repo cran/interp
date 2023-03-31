@@ -100,14 +100,14 @@ ArrayXd Dplus(const ArrayXd& d);
 double kern2d(double x, double xi, double hx,
               double y, double yi, double hy,
               std::string kernel);
-
+List ConvexHull(NumericVector x, NumericVector y);
 PDEst pD(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
          double x, double y, CharacterVector kernel, NumericVector h,
          std::string solver, int degree);
 PDEst pDsmooth(NumericVector xD, NumericVector yD, NumericVector zD, NN nn,
            double x, double y, CharacterVector kernel, NumericVector h,
                std::string solver, int degree, int n, bool akimaweight);
-triang shDt(std::vector<double> x, std::vector<double> y);
+triang shDt(std::vector<double> x, std::vector<double> y, double x_range, double y_range, int ch_size);
 NN nN(NumericVector x, NumericVector y);
 NN nN(VectorXd x, VectorXd y);
 NN extendNN(NN nn, NumericVector X, NumericVector Y,

@@ -13,7 +13,7 @@
 \usage{
 locpoly(x, y, z, xo = seq(min(x), max(x), length = nx), yo = seq(min(y),
  max(y), length = ny), nx = 40, ny = 40, input = "points", output = "grid",
- h = 0, kernel = "uniform", solver = "QR", degree = 3, pd = "")
+ h = 0, kernel = "gaussian", solver = "QR", degree = 3, pd = "")
 }
 \arguments{
   \item{x}{

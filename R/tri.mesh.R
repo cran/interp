@@ -1,4 +1,4 @@
-tri.mesh <- function(x,y=NULL,duplicate="error"){
+tri.mesh <- function(x,y=NULL,duplicate="error",jitter=FALSE){
     if(is.null(x))
         stop("argument x missing.")
     if(is.null(y)){
@@ -36,8 +36,13 @@ tri.mesh <- function(x,y=NULL,duplicate="error"){
         if(any(duplicated(xy)))
             stop("duplicate data points")
 
-    ans <- shull.deltri(x1,y1)
-    nt <- length(ans$i1)
+    ans <- shull.deltri(x1,y1,jitter)
+    nt <- length(ans$i1) ## ???
+    if(ans$nt==-1){
+      # error code for error -13 found, retry with jitter
+      ans <- shull.deltri(jitter(x1,1e-3),jitter(y1,1e-3),jitter)
+      nt <- length(ans$i1)
+    }
 
     ## note: triangles are enumerated in c++ starting with 0, so add 1 here
     ## points are enumerated started with 1

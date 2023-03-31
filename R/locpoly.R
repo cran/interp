@@ -3,7 +3,7 @@ locpoly <- function(x, y, z,
                     yo = seq(min(y), max(y), length = ny),
                     nx = 40, ny = 40,
                     input = "points", output = "grid",
-                    h = 0, kernel = "uniform", solver = "QR", degree = 3,
+                    h = 0, kernel = "gaussian", solver = "QR", degree = 3,
                     pd = ""){
 
     ## secondary use of the partial derivatives estimate for Akimas splines:
