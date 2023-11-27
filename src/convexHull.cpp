@@ -105,7 +105,7 @@ List ConvexHull(NumericVector x, NumericVector y){
   std::vector<Point2D> pts;
   
     if(nx!=ny)
-    ::Rf_error("ConvexHull: length of x and y dont match (%f!=%f)!",nx,ny);
+    ::Rf_error("ConvexHull: length of x and y dont match (%i!=%i)!",nx,ny);
     //Rcout << "prep" << std::endl;
     
     std::vector<double> vx=Rcpp::as<std::vector<double> >(x);

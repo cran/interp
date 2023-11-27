@@ -1,8 +1,8 @@
 Package: interp
 Type: Package
 Title: Interpolation Methods
-Version: 1.1-4
-Date: 2023-03-23
+Version: 1.1-5
+Date: 2023-11-27
 Authors@R: c(person("Albrecht", "Gebhardt", role = c("aut", "cre", "cph"),
                      email = "albrecht.gebhardt@aau.at"),
             person("Roger", "Bivand", role = c("aut"),
@@ -39,9 +39,9 @@ Enhances: RcppEigen
 LinkingTo: Rcpp, RcppEigen
 Depends: R (>= 3.5.0)
 NeedsCompilation: yes
-Packaged: 2023-03-31 12:31:01 UTC; alge
+Packaged: 2023-11-27 17:46:32 UTC; alge
 Author: Albrecht Gebhardt [aut, cre, cph],
   Roger Bivand [aut],
   David Sinclair [aut, cph] (author of the shull library)
 Repository: CRAN
-Date/Publication: 2023-03-31 20:20:02 UTC
+Date/Publication: 2023-11-27 19:20:07 UTC

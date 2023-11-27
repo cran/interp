@@ -1,4 +1,4 @@
-ba7de78868606589bd7728bdbff479f0 *DESCRIPTION
+a050e60bfcf2a08feadef9055481ee46 *DESCRIPTION
 6cd18a4fd8d29f834dc2652d62189e16 *NAMESPACE
 8acc16ee442c4f70a1d20bc9db4216c2 *R/RcppExports.R
 75f5f19496a5829676f37a1e5bac824a *R/aspline.R
@@ -35,7 +35,7 @@ fb9249df5cd29bdc56eae7f32a8c0eed *R/voronoi.area.R
 8a4b560b212eed2ec2ccd3459475711d *R/voronoi.mosaic.R
 c4121448ccfe6336aa3e5af236015eb5 *R/voronoi.polygons.R
 e7dcbca5d9bfb87e225305570cc91b8b *README
-00a0b725bb30ec20f0d49bcb793ae7bf *build/vignette.rds
+6a76102bef2ef79dd7ddf0c2002bba10 *build/vignette.rds
 2e5024d6223e580b969c96af7d2e207e *data/akima.rda
 7b7ab33e7db03602ae19d2631e080143 *data/akima474.rda
 17519b6e33006df1925fb09d77ff298e *data/circtest.rda
@@ -44,13 +44,13 @@ e7dcbca5d9bfb87e225305570cc91b8b *README
 bdb87dc7aabd779ab1f150803eb901cc *data/tritest.rda
 cbb23e45fdb825b4fe253942cd99195c *inst/doc/interp.R
 9c95411b73a9cb99187acb01157cb230 *inst/doc/interp.Rnw
-40650b05a3468abfc2cebe4d482a3f6a *inst/doc/interp.pdf
+062f2d2424681e37dbab97dde9428119 *inst/doc/interp.pdf
 66b7ad12943f8e3e8021f72e01186f4b *inst/doc/partDeriv.R
 17b0426dd5548e46fe561ef524ed5af0 *inst/doc/partDeriv.Rnw
-16ff9a1fed3fd5747cd70d3052fa0384 *inst/doc/partDeriv.pdf
+11510af5e8eba46c5c008c9dc61a32b3 *inst/doc/partDeriv.pdf
 a928d407c3bb7312b9b0efc2d2535a4c *inst/doc/tri.R
 14af2976f7109800a2796dff165f2bef *inst/doc/tri.Rnw
-ea58a279726eddceb9ff7d105f60a63b *inst/doc/tri.pdf
+9b21c70a916c857e284418e9a6d5ae3a *inst/doc/tri.pdf
 67acf70539da27768c8c1c93c03cda1e *man/akima.Rd
 12339e20a62cef0f2fcee519d2e577f3 *man/akima474.Rd
 f735aee020bdf2df7fa80d0f6f5ce932 *man/arcs.Rd
@@ -104,7 +104,7 @@ bb08804d35428f5c4f2c1e70bfef4918 *src/aSpline.cpp
 1922148cc6a3aa3ca756b3a441eeab85 *src/bilinear.f
 e9b3fe94858f40f1803a29793735d17a *src/circum.cpp
 6d5515f7c76afaf20ce63165ef114142 *src/common.cpp
-7b3b3fe715a0b61f9c02f51113078d0b *src/convexHull.cpp
+9f7c2c03582db20091516382dcbdc336 *src/convexHull.cpp
 a80472363ab1c764ee1336c76270602f *src/init.c
 1011f492fadea44203558279b7e7422a *src/interp.cpp
 0009a829306007a9ac3e6f303a9ebbd5 *src/interp.h
