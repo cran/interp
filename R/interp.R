@@ -19,7 +19,8 @@ interp <- function(x, y=NULL, z,
                    adtol=0.1,
                    smoothpde=FALSE,
                    akimaweight=TRUE,
-                   nweight=25)
+                   nweight=25,
+                   na.rm=FALSE)
     {
         if(method=="linear")
             linear <- TRUE
@@ -29,7 +30,8 @@ interp <- function(x, y=NULL, z,
         sp.z <- NULL
         sp.proj4string <- NULL
         if(is.null(y)&&is.character(z)){
-            if(inherits(x,"SpatialPointsDataFrame") &&
+            if((inherits(x,"SpatialPointsDataFrame") ||
+                inherits(x,"SpatialPixelsDataFrame")) &&
                 requireNamespace("sp", quietly=TRUE)) {
                 sp.coord <- dimnames(sp::coordinates(x))[[2]]
                 sp.z <- z
@@ -37,11 +39,16 @@ interp <- function(x, y=NULL, z,
                 z <- x@data[,z]
                 y <- sp::coordinates(x)[,2]
                 x <- sp::coordinates(x)[,1]
+                if(na.rm){
+                    z <- z[!is.na(z)]
+                    x <- z[!is.na(z)]
+                    y <- z[!is.na(z)]
+                }
                 is.sp <- TRUE
                 xo = seq(min(x), max(x), length = nx)
                 yo = seq(min(y), max(y), length = ny)
             } else
-                stop("either x,y,z are numerical or x is SpatialPointsDataFrame and z a name of a data column in x")
+                stop("either x,y,z are numerical or x is SpatialPointsDataFrame / SpatialPixelsDataFrame and z a name of a data column in x")
         }
         if(!(all(is.finite(x)) && all(is.finite(y)) && all(is.finite(z))))
             stop("missing values and Infs not allowed")
@@ -86,14 +93,16 @@ interp <- function(x, y=NULL, z,
            }
         }
         if(input=="grid"){
-          nxi <- length(x)
-          nyi <- length(y)
-
-          x<- c(matrix(rep(x,nyi),nrow=nxi,ncol=nyi,byrow=FALSE))
-          y<- c(matrix(rep(y,nxi),nrow=nxi,ncol=nyi,byrow=TRUE))
-	  z<- c(z)
+          if(!is.sp){
+            nxi <- length(x)
+            nyi <- length(y)
+            
+            x<- c(matrix(rep(x,nyi),nrow=nxi,ncol=nyi,byrow=FALSE))
+            y<- c(matrix(rep(y,nxi),nrow=nxi,ncol=nyi,byrow=TRUE))
+            z<- c(z)
+          } 
         }
-        if(method=="linear"||method=="akima"){
+        if(method=="linear"||method=="akima"||method=="bilinear"){
 
             if(deltri=="deldir"){
                 if(!linear)
@@ -101,12 +110,18 @@ interp <- function(x, y=NULL, z,
                 triangles <- triang.list(deldir(x=x,y=y,z=z))
                 ans <- interpDeltri(xo,yo,z,triangles,input,output)
             } else if(deltri=="shull"){
-                ans <- interpShull(xo,yo,x,y,z,linear,input,output,
-                                   kernel,h,
-                                   solver,degree,
-                                   baryweight,
-                                   autodegree,adtol,
-                                   smoothpde,akimaweight,nweight)
+                if(method=="bilinear")
+                    if(input=="grid")
+                        ans <- bilinear(xo,yo,x,y,z)
+                    else
+                        stop("method=\"bilinear\" needs input=\"grid\"!")
+                if(method=="linear"||method=="akima")    
+                    ans <- interpShull(xo,yo,x,y,z,linear,input,output,
+                                       kernel,h,
+                                       solver,degree,
+                                       baryweight,
+                                       autodegree,adtol,
+                                       smoothpde,akimaweight,nweight)
                 if(ans$err==-13){
                   ## retry with jitter
                   ans <- interpShull(xo,yo,jitter(x,1e-3),jitter(y,1e-3),z,linear,input,output,
@@ -115,7 +130,16 @@ interp <- function(x, y=NULL, z,
                                      baryweight,
                                      autodegree,adtol,
                                      smoothpde,akimaweight,nweight)
+                } else if(ans$err==-14){
+                  ## retry with jitter (or TODO: rescale)
+                  ans <- interpShull(xo,yo,jitter(x,1e-3),jitter(y,1e-3),z,linear,input,output,
+                                     kernel,h,
+                                     solver,degree,
+                                     baryweight,
+                                     autodegree,adtol,
+                                     smoothpde,akimaweight,nweight)
                 }
+                
                 if(output=="points") # back to vector from matrix:
                     ans$z <- c(ans$z)
             } else

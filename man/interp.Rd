@@ -4,8 +4,10 @@
   Interpolation function
 }
 \description{
-  This function currently implements piecewise linear interpolation
-  (=barycentric interpolation).
+     This function implements bivariate interpolation for irregularly 
+     spaced input data. Piecewise linear (=barycentric interpolation), 
+     bilinear or bicubic spline interpolation according to Akimas method
+     is applied. 
 }
 \usage{
 interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
@@ -16,12 +18,15 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
        method = "linear", deltri = "shull", h=0,
        kernel="gaussian", solver="QR", degree=3,
        baryweight=TRUE, autodegree=FALSE, adtol=0.1,
-       smoothpde=FALSE, akimaweight=TRUE, nweight=25)
+       smoothpde=FALSE, akimaweight=TRUE, nweight=25,
+       na.rm=FALSE)
 }
 \arguments{
   \item{x}{
     vector of \eqn{x}-coordinates of data points or a
-    \code{SpatialPointsDataFrame} object.
+    \code{SpatialPointsDataFrame} object (a regular gridded 
+    \code{SpatialPixelsDataFrame} is also allowed). In this case also
+    an sp data object will be returned.
     Missing values are not accepted.
 }
   \item{y}{
@@ -37,25 +42,22 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     naming the variable of interest in the
     \code{SpatialPointsDataFrame} \code{x}.
 
-    Missing values are not accepted.
+    Missing values are not accepted by default, see parameter \code{na.rm}.
 
     \code{x}, \code{y}, and \code{z} must be the same length
     (execpt if \code{x} is a \code{SpatialPointsDataFrame}) and may
     contain no fewer than four points. The points of \code{x} and
-    \code{y} should not be collinear, i.e, they should not fall on the same line
-    (two vectors \code{x} and \code{y} such that \code{y = ax + b} for
-    some \code{a}, \code{b} will not produce menaningful results).
+    \code{y} should not be collinear if \code{input="grid"}, 
+    as the underlying triangulation in these cases sometimes fails.
 
-
-    \code{interp} is
-    meant for cases in which you have \eqn{x}, \eqn{y} values
-    scattered over a plane and a \eqn{z} value for each.  If, instead,
+    \code{interp} is meant for cases in which you have \eqn{x}, \eqn{y} 
+    values scattered over a plane and a \eqn{z} value for each.  If, instead,
     you are trying to evaluate a mathematical function, or get a
     graphical interpretation of relationships that can be described by a
     polynomial, try \code{\link{outer}}.
   }
   \item{xo}{
-    If \code{output="grid"} (default): sequence of \eqn{x} locations for
+    If \code{output="grid"} (which is the default): sequence of \eqn{x} locations for
     rectangular output grid, defaults to \code{nx} points between
     \code{min(x)} and \code{max(x)}.
 
@@ -73,7 +75,8 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     text, possible values are \code{"grid"} (not yet implemented) and
     \code{"points"} (default).
 
-    This is used to distinguish between regular and irregular gridded data.
+    This is used to distinguish between regular and irregular gridded 
+    input data.
   }
   \item{output}{
     text, possible values are \code{"grid"} (=default) and
@@ -102,19 +105,24 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     Please use the new \code{method} argument instead!
   }
   \item{method}{
-    text, possible methods are (currently only, more is under
-    developement) \code{"linear"} (piecewise linear interpolation within
+    text, possible methods are 
+    \code{"linear"} (piecewise linear interpolation within
     the triangles of the Delaunay triangulation, also
     referred to as barycentric interpolation based on barycentric 
     coordinates) and \code{"akima"} (a reimplementation for Akimas spline 
     algorithms for irregular gridded data with the accuracy of a 
     bicubic polynomial).
 
-    This replaces the old \code{linear} argument of \code{akima::interp}.
+    \code{method="bilinear"} is only applicable to regular grids
+    (\code{input="grid"}) and in turn calls \code{\link{bilinear}}, 
+    see there for more details.
+
+    \code{method="linear"} replaces the old \code{linear} argument of 
+    \code{akima::interp}.
   }
   \item{extrap}{
     logical, indicates if extrapolation outside the convex hull is
-    intended, will not work for piecewise linear interpolation!
+    intended, this will not work for piecewise linear interpolation!
   }
   \item{duplicate}{
     character string indicating how to handle duplicate
@@ -137,7 +145,7 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     dimension of output grid in y direction
   }
   \item{deltri}{
-    triangulation method used, this argument will later be moved
+    triangulation method used, this argument may later be moved
     into a control set together with others related to the spline
     interpolation! Possible values are \code{"shull"} (default, sweep 
     hull algorithm) and \code{"deldir"} (uses package\code{deldir}).
@@ -149,11 +157,15 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
   \item{solver}{solver used in partial derivatives estimation, compare \code{\link{locpoly}} for details}
   \item{degree}{degree of local polynomial used for partial derivatives
     estimation, compare \code{\link{locpoly}} for details}
-  \item{baryweight}{calculate three partial derivatives estimatiors and
-    weight them}
-  \item{autodegree}{try to reduce degree automatically}
-  \item{adtol}{used for autodegree}
-  \item{smoothpde}{Use a an averaged version of partial derivatives
+  \item{baryweight}{calculate three partial derivatives estimators and
+    return a barycentric weighted average.
+  
+    This increases the accuracy of Akima splines but the runtime is 
+    multplied by 3!
+  }
+  \item{autodegree}{try to reduce \code{degree} automatically}
+  \item{adtol}{tolerance used for autodegree}
+  \item{smoothpde}{Use an averaged version of partial derivatives
     estimates, by default simple average of \code{nweight} estimates.
 
     Currently disabled by default (FALSE), underlying code still a bit 
@@ -164,6 +176,7 @@ interp(x, y = NULL, z, xo = seq(min(x), max(x), length = nx),
     estimations instead of simply averaging}
   \item{nweight}{size of search neighbourhood for weighting scheme,
     default: 25}
+  \item{na.rm}{remove points where z=\code{NA}, defaults to \code{FALSE}}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -298,7 +311,35 @@ colors <- terrain.colors(length(breaks)-1)
 image(IS,breaks=breaks,col=colors,main="Franke function 1",
       sub=paste("spline interpolation, ", nx,"x",ny,"points"))
 contour(IS,add=TRUE,levels=breaks)
-        points(xx,yy)
+points(xx,yy)
+
+## apply interp to sp data:
+require(sp)
+## convert Akima data set to a sp object 
+data(akima)
+asp <- SpatialPointsDataFrame(list(x=akima$x,y=akima$y),
+                              data = data.frame(z=akima$z))
+spplot(asp,"z")
+## linear interpolation
+spli <- interp(asp, z="z", method="linear")
+## the result is again a SpatialPointsDataFrame: 
+spplot(spli,"z")
+## now with spline interpolation, slightly higher resolution
+spsi <- interp(asp, z="z", method="akima", nx=120, ny=120)
+spplot(spsi,"z")
+
+## now sp grids: reuse stuff from above
+spgr <- SpatialPixelsDataFrame(list(x=c(xx),y=c(yy)),
+                               data=data.frame(z=c(fg)))
+spplot(spgr)
+## linear interpolation
+spli <- interp(spgr, z="z", method="linear", input="grid")
+## the result is again a SpatialPointsDataFrame: 
+spplot(spli,"z")
+## now with spline interpolation, slightly higher resolution
+spsi <- interp(spgr, z="z", method="akima", nx=240, ny=240)
+spplot(spsi,"z")
+
 set.seed(oldseed)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

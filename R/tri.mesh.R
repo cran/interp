@@ -38,12 +38,23 @@ tri.mesh <- function(x,y=NULL,duplicate="error",jitter=FALSE){
 
     ans <- shull.deltri(x1,y1,jitter)
     nt <- length(ans$i1) ## ???
-    if(ans$nt==-1){
+    if(ans$nt==-13){
       # error code for error -13 found, retry with jitter
       ans <- shull.deltri(jitter(x1,1e-3),jitter(y1,1e-3),jitter)
+      # replug unjittered data back:
+      ans$x=x1
+      ans$y=y1
       nt <- length(ans$i1)
+    } else if(ans$nt==-14){
+      # error code for error -14 found, retry with jitter (or TODO: rescale)
+      ans <- shull.deltri(jitter(x1,1e-3),jitter(y1,1e-3),jitter)
+      # replug unjittered data back:
+      ans$x=x1
+      ans$y=y1
+      nt <- length(ans$i1)
+    } else if(ans$nt==-15){
+	stop("triangulation failed, try rescling your data")
     }
-
     ## note: triangles are enumerated in c++ starting with 0, so add 1 here
     ## points are enumerated started with 1
     tri.obj<-list(n=ans$n,x=ans$x,y=ans$y,

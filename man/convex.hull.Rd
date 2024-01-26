@@ -23,6 +23,11 @@
   \code{ConvexHull} is an experimental C++ implementation of Grahams Scan
   without previous triangulation, should be much faster.
 }
+\note{
+  In case that there are several collinear nodes on the convex hull
+  \code{convex.hull} will return them all while \code{ConvexHull} will only
+  give edge points.
+}
 \value{
   \item{x}{x coordinates of boundary nodes.}
   \item{y}{y coordinates of boundary nodes.}

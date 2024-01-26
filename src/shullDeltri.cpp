@@ -1,6 +1,23 @@
 
 #include "interp.h"
 
+#define MAX(x, y) (x > y ? x : y)
+#define MIN(x, y) (x < y ? x : y)
+
+
+/*
+void print_ivec(std::vector<int> vec)
+{
+  auto itr = vec.begin();
+  std::cout << "c(";
+  while (itr != vec.end()){
+    std::cout <<" " << *itr << ", ";
+    itr++;
+  }
+  std::cout << ")"<<std::endl;
+}
+*/
+
 
 // [[Rcpp::export(name="shull.deltri")]]
 List shullDeltri(NumericVector x, NumericVector y, LogicalVector jitter=false) {
@@ -35,12 +52,12 @@ List shullDeltri(NumericVector x, NumericVector y, LogicalVector jitter=false) {
 		     Rcpp::as<std::vector<double> >(y),
 		     x_range, y_range, CHsize);
 
-    if(tXYZ.nT==-1){
-      // error -13 occured, restart with jitter, for this exit with error
+    if(tXYZ.nT<0){
+      // error -13 or -14 occured, restart with jitter, for this exit with error
       // condition into R code for reentry:
       // dummy return List
       ret=List::create(_("n")=0, _("x")=0, _("y")=0,
-                       _("nt")=-1 /* = error code */,
+                       _("nt")=tXYZ.nT /* = error code */,
                        _("trlist")=0,
                        _("cclist")=0,
                        _("nch")=0, _("ch")=0,
@@ -88,7 +105,7 @@ List shullDeltri(NumericVector x, NumericVector y, LogicalVector jitter=false) {
       tXYZ.ar[i]=cc.ar;
     }
     // get convex hull and arcs
-    std::vector<int> cp1=std::vector<int>(nx);
+    std::vector<int> cp1=std::vector<int>(nx); // TODO: nChull ?
     std::vector<int> cp2=std::vector<int>(nx);
     // count
     int nCH=0;
@@ -184,17 +201,35 @@ List shullDeltri(NumericVector x, NumericVector y, LogicalVector jitter=false) {
 
     // first arc on convex hull
 
-
+    //std::cerr << "cp1:" <<std::endl;
+    //print_ivec(cp1);
+    //std::cerr << "cp2:" <<std::endl;
+    //print_ivec(cp2);
+    
     tXYZ.ch[0]=cp1[0];
     tXYZ.ch[1]=cp2[0];
     int j=1;
 
     while(j<nCH-1){
       // search next arc starting with last endpoint
+      int found=0;
       for(int i=1; i<nCH; i++){
         if(tXYZ.ch[j]==cp1[i]){
           tXYZ.ch[j+1]=cp2[i];
+          found=1;
+        } 
+      }
+      
+      if(found==0){ // search reverse oriented arc
+        for(int i=1; i<nCH; i++){
+          if(tXYZ.ch[j]==cp2[i]){
+            tXYZ.ch[j+1]=cp1[i];
+            found=1;
+          }
         }
+      }
+      if(found==0){
+        Rf_warning("something failed while determining the boundary!");
       }
       j++;
     }
@@ -299,6 +334,28 @@ Triang shDt(std::vector<double> x, std::vector<double> y, double x_range, double
         stop("shull: triangle flipping error");
       } else if (ierr == -6) {
         stop("shull: triangle flipping error");
+      } else if (ierr == -14) {
+        Rf_warning("shull: complete hull invisible, data scaling error, will retry with some jitter\n");
+        Txy.i1=std::vector<int>(1);
+        Txy.i2=std::vector<int>(1);
+        Txy.i3=std::vector<int>(1);
+        Txy.j1=std::vector<int>(1);
+        Txy.j2=std::vector<int>(1);
+        Txy.j3=std::vector<int>(1);
+        Txy.k1=std::vector<int>(1);
+        Txy.k2=std::vector<int>(1);
+        Txy.k3=std::vector<int>(1);
+        Txy.ch=std::vector<int>(1);
+        Txy.a1=std::vector<int>(1);
+        Txy.a2=std::vector<int>(1);
+        Txy.xc=std::vector<double>(1);
+        Txy.yc=std::vector<double>(1);
+        Txy.rc=std::vector<double>(1);
+        Txy.ar=std::vector<double>(1);
+        Txy.rt=std::vector<double>(1);
+        Txy.nT=-14; // use this as error indicator for restart with jitter/rescale
+        return Txy;
+        
       } else if (ierr == -13) {
         //if(trials==0)
         Rf_warning("shull: too many triangles to swap, will retry with some jitter\n");
@@ -322,7 +379,7 @@ Triang shDt(std::vector<double> x, std::vector<double> y, double x_range, double
         Txy.rc=std::vector<double>(1);
         Txy.ar=std::vector<double>(1);
         Txy.rt=std::vector<double>(1);
-        Txy.nT=-1; // use this as error indicator for restart with jitter
+        Txy.nT=-13; // use this as error indicator for restart with jitter
         return Txy;
         /*
          trials++;

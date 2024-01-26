@@ -33,7 +33,18 @@ using namespace std;
  */
 
 
-
+/*
+void print_vec(std::vector<Shx> vec)
+{
+    auto itr = vec.begin();
+    std::cout << "list(";
+    while (itr != vec.end()){
+        std::cout << "c(" << itr->r << ", " << itr->c << "), ";
+	itr++;
+    }
+    std::cout << ")"<<std::endl;
+}
+*/
 
 
 
@@ -305,7 +316,6 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
     }
   }
 
-  std::vector<Shx> hull;
 
 
   r = (pts[0].r + pts[1].r + pts[2].r )/(float) 3.0;
@@ -315,6 +325,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
   float tr01 =  pts[1].r - pts[0].r, tc01 =  pts[1].c - pts[0].c;
 
   float df = -tr01* dc0 + tc01*dr0;
+  std::vector<Shx> hull;
   if( df < 0 ){   // [ 0 1 2 ]
     pt0.tr = pt1.r-pt0.r;
     pt0.tc = pt1.c-pt0.c;
@@ -380,6 +391,10 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
     ptx.id = pts[k].id;
 
     int numh = (int) hull.size(); //, numh_old = numh;
+    if(numh==0) {
+	//cout << "hull empty!!" << endl;
+	return(-15);
+    }
     dr = rx- hull[0].r;    dc = cx- hull[0].c;  // outwards pointing from hull[0] to pt.
 
     std::vector<int> pidx, tridx;
@@ -406,7 +421,10 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	  pidx.push_back(hull[h].id);
 	  tridx.push_back(hull[h].trid);
 	  if( df < 0 ){
+	    //cerr << "hull capacity: " << hull.capacity() <<endl;
+	    //cerr << "hull size: " << hull.size() <<endl;
 	    hull.erase(hull.begin() + h);
+	    //cerr << "hull size after erase 1: " << hull.size() <<endl;
 	    h--;
 	    numh--;
 	  }
@@ -414,6 +432,8 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	    ptx.tr = hull[h].r - ptx.r;
 	    ptx.tc = hull[h].c - ptx.c;
 
+	    //cerr << "hull capacity: " << hull.capacity() <<endl;
+	    //cerr << "hull size: " << hull.size() <<endl;
 	    hull.insert( hull.begin() , ptx);
 	    numh++;
 	    break;
@@ -429,7 +449,10 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	  if( df < 0 ){  // h is visible
 	    pidx.insert(pidx.begin(), hull[h].id);
 	    tridx.insert(tridx.begin(), hull[h].trid);
+	    //cerr << "hull capacity: " << hull.capacity() <<endl;
+ 	    //cerr << "hull size: " << hull.size() <<endl;
 	    hull.erase(hull.begin() + h+1);  // erase end of chain
+	    //cerr << "hull size after erase 2: " << hull.size() <<endl;
 
 	  }
 	  else{
@@ -457,7 +480,10 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	  pidx.push_back(hull[h].id);
 	  tridx.push_back(hull[h].trid);
 	  if( df < 0 ){                     // visible
+	    //cerr << "hull capacity: " << hull.capacity() <<endl;
+	    //cerr << "hull size: " << hull.size() <<endl;
 	    hull.erase(hull.begin() + h);
+	    //cerr << "hull size after erase 3: " << hull.size() <<endl;
 	    h--;
 	    numh--;
 	  }
@@ -468,6 +494,8 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	    hull[h-1].tr = ptx.r - hull[h-1].r;
 	    hull[h-1].tc = ptx.c - hull[h-1].c;
 
+	    //cerr << "hull capacity: " << hull.capacity() <<endl;
+	    //cerr << "hull size: " << hull.size() <<endl;
 	    hull.insert( hull.begin()+h, ptx);
 	    break;
 	  }
@@ -482,6 +510,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
       for( int h=1; h<numh; h++){
 	dr = rx- hull[h].r;    dc = cx- hull[h].c;
 	df = -dc* hull[h].tr + dr*hull[h].tc;
+       // cerr << "df: " << df << endl;
 	if( df < 0 ){
 	  if( e1 < 0 ) e1 = h;  // fist visible
 	}
@@ -493,7 +522,13 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	}
 
       }
-
+      if(e1==-1)
+      {
+	 //cerr << "nothing visible!!" << endl;
+        //cerr << "point x: " << rx << ", " << cx << endl;
+	 //print_vec(hull);
+	 return(-14);
+      }
 
       // triangle pidx starts at e1 and ends at e2 (inclusive).
       if( e2 < numh ){
@@ -514,7 +549,11 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
       // erase elements e1+1 : e2-1 inclusive.
 
       if( e1 < e2-1){
+        //cerr << "hull capacity: " << hull.capacity() <<endl;
+        //cerr << "hull size: " << hull.size() <<endl;
+        //cerr << "hull erase from: " << e1+1 << " to:" << e2 <<endl;
 	hull.erase(hull.begin() + e1+1, hull.begin()+ e2);
+        //cerr << "hull size after erase 4: " << hull.size() <<endl;
       }
 
       // insert ptx at location e1+1.
@@ -530,6 +569,8 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
       hull[e1].tr = ptx.r - hull[e1].r;
       hull[e1].tc = ptx.c - hull[e1].c;
 
+      //cerr << "hull capacity: " << hull.capacity() <<endl;
+      //cerr << "hull size: " << hull.size() <<endl;
       hull.insert( hull.begin()+e1+1, ptx);
       hidx = e1+1;
 
@@ -571,6 +612,10 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	hull[hidx-1].trid = numt;
       else{
 	numh = (int) hull.size();
+	if(numh==0) {
+		//cout << "hull empty!!" << endl;
+	        return(-15);
+        }
 	hull[numh-1].trid = numt;
       }
       triads.push_back( trx );
@@ -615,6 +660,10 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
 	hull[hidx-1].trid = T0;
       else{
 	numh = (int) hull.size();
+	if(numh==0) {
+		//cout << "hull empty!!" << endl;
+	        return(-15);
+        }
 	hull[numh-1].trid = T0;
       }
 
@@ -661,7 +710,7 @@ int s_hull_pro( std::vector<Shx> &pts, std::vector<Triad> &triads, int ch_size)
     // cerr << "flipping cycle  " << nit << "   active triangles " << nits << endl;
 
     if(nits>2*(2*pts.size()-ch_size-2)){
-      // too many triangles (we have max. 2n − h − 2 triangles and 3n−h−3 edges)
+      // too many triangles (we can have max. 2n − h − 2 triangles and 3n−h−3 edges)
       return(-13); // calling function will retry with some jitter error 
                    // which should resolve this in case of too much 
                    // collinear pints

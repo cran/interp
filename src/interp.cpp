@@ -192,14 +192,24 @@ List interpShull(NumericVector x, NumericVector y,
 		    Rcpp::as<std::vector<double> >(yD),
 		    x_range, y_range, ch_size);
     // TODO: handle restart with jitter 
-    if(tXY.nT==-1){
+    if(tXY.nT==-13){
       // error -13 occured, restart with jitter, for this exit with error
       // condition into R code for reentry:
       // dummy return List
       ret=List::create(_("x")=0, _("y")=0, _("z")=0, _("err")=-13);
 
       return ret;
+    } else if(tXY.nT==-14){
+      // error -13 occured, restart with jitter, for this exit with error
+      // condition into R code for reentry:
+      // dummy return List
+      ret=List::create(_("x")=0, _("y")=0, _("z")=0, _("err")=-14);
+      
+      return ret;
+    } else if(tXY.nT==-15){
+      Rf_error("triangulation failed, try rescaling your data.");
     }
+    
     
     // note: triangles are enumerated counterclockwise
 
